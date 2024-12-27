@@ -4,6 +4,13 @@ This repository contains templates for competitive programming problems. The tem
 
 ## Templates
 
+- [Aho_Corasick](templates/Aho_Corasick.cpp)
+- [Bellman_Ford](templates/Bellman_Ford.cpp)
+- [Binary_Trie](templates/Binary_Trie.cpp)
+- [BIT](templates/BIT.cpp)
+- [Bits](templates/Bits.cpp)
+- [Booth's_Algorithm](templates/Booth's_Algorithm.cpp)
+- [Centroid_Decomposition](templates/Centroid_Decomposition.cpp)
 - [DFS](templates/DFS.cpp)
 - [DSU With Rollbacks](templates/DSU_With_Rollbacks.cpp)
 - [Euler Tour](templates/Euler_Tour.cpp)
