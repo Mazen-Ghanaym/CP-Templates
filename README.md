@@ -1,2 +1,39 @@
 # CP-Templates
-My CP Templates
+
+This repository contains templates for competitive programming problems. The templates are written in C++.
+
+## Templates
+
+- [DFS](templates/DFS.cpp)
+- [DSU With Rollbacks](templates/DSU_With_Rollbacks.cpp)
+- [Euler Tour](templates/Euler_Tour.cpp)
+- [Fenwick Tree](templates/Fenwick_Tree.cpp)
+- [Geometry](templates/Geometry.cpp)
+- [Hashing_Prefix](templates/Hashing_Prefix.cpp)
+- [Hashing_Segment_Tree](templates/Hashing_Segment_Tree.cpp)
+- [Hashing1](templates/Hashing1.cpp)
+- [Hashing2](templates/Hashing2.cpp)
+- [HLD_Maximum_Subarray](templates/HLD_Maximum_Subarray.cpp)
+- [K_th_Ancestor_Binary_Lifting](templates/K_th_Ancestor_Binary_Lifting.cpp)
+- [KMP](templates/KMP.cpp)
+- [KMP2](templates/KMP2.cpp)
+- [Lazy_Propagation_01](templates/Lazy_Propagation_01.cpp)
+- [LCA_1](templates/LCA_1.cpp)
+- [Manachers](templates/Manachers.cpp)
+- [Matrix_Power](templates/Matrix_Power.cpp)
+- [Mex_Class](templates/Mex_Class.cpp)
+- [MO_on_tree_edges](templates/Mo_on_tree_edges.cpp)
+- [MO_on_tree_val_on_nodes](templates/MO_on_tree_val_on_nodes.cpp)
+- [MO's_algo](templates/MO's_algo.cpp)
+- [Mobius](templates/Mobius.cpp)
+- [Monotonic_Queue](templates/Monotonic_Queue.cpp)
+- [Segment_Tree](templates/Segment_Tree.cpp)
+- [Sparse_Table](templates/Sparse_Table.cpp)
+- [SQRT_Decomposition](templates/SQRT_Decomposition.cpp)
+- [Subset_Sum_Optimizations](templates/Subset_Sum_Optimizations.cpp)
+- [Suffix_Array_Int](templates/Suffix_Array_Int.cpp)
+- [Suffix_Array](templates/Suffix_Array.cpp)
+- [Tarjan](templates/Tarjan.cpp)
+- [Tree_Diameter](templates/Tree_Diameter.cpp)
+- [Tree_Isomorphism](templates/Tree_Isomorphism.cpp)
+- [Z_Algorithm](templates/Z_Algorithm.cpp)
