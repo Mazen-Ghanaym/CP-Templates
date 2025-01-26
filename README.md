@@ -34,6 +34,7 @@ This repository contains templates for competitive programming problems. The tem
 - [MO's_algo](templates/MO's_algo.cpp)
 - [Mobius](templates/Mobius.cpp)
 - [Monotonic_Queue](templates/Monotonic_Queue.cpp)
+- [Number_Theory](templates/Number_Theory.cpp)
 - [Segment_Tree](templates/Segment_Tree.cpp)
 - [Sparse_Table](templates/Sparse_Table.cpp)
 - [SQRT_Decomposition](templates/SQRT_Decomposition.cpp)
