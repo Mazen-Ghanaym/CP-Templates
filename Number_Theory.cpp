@@ -220,12 +220,14 @@ struct Number_Theory
     // fermat's little theorem: a^(m - 1) ≡ 1 (mod m) if a and m are coprime
     // euler's theorem: a^φ(m) ≡ 1 (mod m) if a and m are coprime because φ(m) = m - 1 if m is prime
     // this also yields x^k mod m = x^(k % (m - 1)) mod m if x and m are coprime
-    ll power_big_number_mod(ll b, ll n, ll m){
+    ll power_big_number_mod(ll b, ll n, ll m)
+    {
         // O(log(n))
         ll ans = 1;
         n %= m - 1;
-        while(n){
-            if(n & 1)
+        while (n)
+        {
+            if (n & 1)
                 ans = (ans * b) % m;
             b = (b * b) % m;
             n >>= 1;
@@ -234,12 +236,11 @@ struct Number_Theory
     }
 
     // if a^b^c % m = a^(b^c % (m - 1)) % m
-    ll power_tower_mod(ll a, ll b, ll c, ll m){
+    ll power_tower_mod(ll a, ll b, ll c, ll m)
+    {
         // O(log(m))
         return power_big_number_mod(a, power_big_number_mod(b, c, m - 1), m);
     }
-
-
 };
 struct Sieve
 {
@@ -305,15 +306,18 @@ struct SPF
     vector<int> spf(N);
     void SPF()
     {
+        iota(spf.begin(), spf.end(), 0);
         for (int i = 2; i < N; i++)
         {
-            if (spf[i] == 0)
+            if (spf[i] == i)
             {
-                spf[i] = i;
+
                 for (int j = i * i; j < N; j += i)
                 {
-                    if (spf[j] == 0)
+                    if (spf[j] == j)
+                    {
                         spf[j] = i;
+                    }
                 }
             }
         }
