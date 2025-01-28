@@ -19,9 +19,12 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-// Miller-Rabin primality test
-// Non-deterministic algorithm
-// Complexity: O(iterations * log^3(n))
+// Non-Deterministic Miller-Rabin:
+// - Probabilistic algorithm: small chance of error (error probability ≤ 4^(-iterations)).
+// - Uses randomly selected bases for each iteration (faster for fewer iterations).
+// - Time Complexity: O(iterations * log^3(n)), where iterations = number of random tests (e.g., 5).
+// - Suitable for testing primality of numbers beyond 10^18 or when speed is prioritized.
+// - Can reduce error probability further by increasing the number of iterations.
 struct Miller_Rabin_Non_Deterministic1e18
 {
   using u64 = uint64_t;
@@ -77,9 +80,12 @@ struct Miller_Rabin_Non_Deterministic1e18
     return true;
   }
 };
-// Miller-Rabin primality test
-// Deterministic algorithm
-// O( sz(a) * log^3(n) )
+// Deterministic Miller-Rabin:
+// - Deterministic algorithm: guarantees correctness for numbers up to 10^18.
+// - Uses a fixed set of bases (e.g., {2, 3, 5, 7, ...}) to ensure accuracy.
+// - Time Complexity: O(fixed_bases * log^3(n)), where fixed_bases = number of pre-determined bases.
+// - Suitable for applications where absolute certainty is required within the supported range.
+// - Slightly slower as it always tests all fixed bases, regardless of input.
 struct Miller_Rabin_Deterministic1e18
 {
   using u64 = uint64_t;
@@ -138,6 +144,12 @@ struct Miller_Rabin_Deterministic1e18
 };
 void solve(int tc)
 {
+    Miller_Rabin_Deterministic1e18 mr;
+    Miller_Rabin_Non_Deterministic1e18 mrn;
+    int n;
+    cin >> n;
+    cout << (mr.MillerRabin(n) ? "Prime" : "Not Prime") << nl;
+    cout << (mrn.MillerRabin(n) ? "Probably Prime" : "Not Prime") << nl;
 }
 signed main(void)
 {
