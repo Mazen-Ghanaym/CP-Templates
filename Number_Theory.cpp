@@ -297,6 +297,47 @@ struct Sieve
             }
         }
     }
+
+    // segmented sieve: the segmented sieve of Eratosthenes is an algorithm used to find all prime numbers in a range [L, R]
+    vector<char> segmentedSieve(long long L, long long R)
+    {
+        // O(sqrt(R) log log R + (R - L + 1) log log R)
+        // generate all primes up to sqrt(R)
+        long long lim = sqrt(R);
+        vector<char> mark(lim + 1, false);
+        vector<long long> primes;
+        for (long long i = 2; i <= lim; ++i)
+        {
+            if (!mark[i])
+            {
+                primes.emplace_back(i);
+                for (long long j = i * i; j <= lim; j += i)
+                    mark[j] = true;
+            }
+        }
+
+        vector<char> isPrime(R - L + 1, true);
+        for (long long i : primes)
+            for (long long j = max(i * i, (L + i - 1) / i * i); j <= R; j += i)
+                isPrime[j - L] = false;
+        if (L == 1)
+            isPrime[0] = false;
+        return isPrime;
+    }
+
+    // another implementation of segmented sieve
+    vector<char> segmentedSieveNoPreGen(long long L, long long R)
+    {
+        // O((R - L + 1) log R + sqrt(R))
+        vector<char> isPrime(R - L + 1, true);
+        long long lim = sqrt(R);
+        for (long long i = 2; i <= lim; ++i)
+            for (long long j = max(i * i, (L + i - 1) / i * i); j <= R; j += i)
+                isPrime[j - L] = false;
+        if (L == 1)
+            isPrime[0] = false;
+        return isPrime;
+    }
 };
 struct SPF
 {
