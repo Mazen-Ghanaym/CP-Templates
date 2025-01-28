@@ -298,7 +298,8 @@ struct Sieve
         }
     }
 
-    // segmented sieve: the segmented sieve of Eratosthenes is an algorithm used to find all prime numbers in a range [L, R]
+    // segmented sieve:
+    // the segmented sieve of Eratosthenes is an algorithm used to find all prime numbers in a range [L, R]
     vector<char> segmentedSieve(long long L, long long R)
     {
         // O(sqrt(R) log log R + (R - L + 1) log log R)
@@ -337,6 +338,96 @@ struct Sieve
         if (L == 1)
             isPrime[0] = false;
         return isPrime;
+    }
+
+    // Function to generate primes up to N using a highly optimized sieve
+    vector<int> sieve(int N, int Q = 17, int L = 1 << 15)
+    {
+        // O(N / log(N))
+        // Number of primes up to 1e9 is 8702706
+        // Residue values for numbers coprime to 2, 3, 5 in mod 30
+        const int residues[] = {1, 7, 11, 13, 17, 19, 23, 29};
+
+        // Approximate prime count using the formula pi(N) ~ N / log(N)
+        auto approx_prime_count = [](int N)
+        {
+            return (N > 60184) ? N / (log(N) - 1.1) : max(1.0, N / (log(N) - 1.11)) + 1;
+        };
+
+        int sqrtN = sqrt(N);         // Square root of N
+        int sqrtSqrtN = sqrt(sqrtN); // Square root of sqrt(N)
+
+        // Step 1: Sieve up to sqrt(N) to find small primes
+        vector<bool> is_prime(sqrtN + 1, true);
+        for (int i = 2; i <= sqrtSqrtN; ++i)
+        {
+            if (is_prime[i])
+            {
+                for (int j = i * i; j <= sqrtN; j += i)
+                    is_prime[j] = false;
+            }
+        }
+
+        // Collect small primes and initialize variables
+        vector<int> primes = {2, 3, 5};       // Small primes
+        vector<int> small_primes;             // Small primes used for wheel
+        int prime_count = 3;                  // Number of primes found so far
+        primes.resize(approx_prime_count(N)); // Allocate space for all primes
+
+        for (int p = 7; p <= sqrtN; ++p)
+        {
+            if (is_prime[p])
+            {
+                primes[prime_count++] = p;
+                if (p <= Q)
+                    small_primes.push_back(p);
+            }
+        }
+
+        // Step 2: Precompute the wheel pattern for small primes
+        int prod = 1;
+        for (int p : small_primes)
+            prod *= p;
+
+        vector<unsigned char> wheel(prod, 0xFF); // Initialize wheel (all bits set)
+        for (int p : small_primes)
+        {
+            for (int i = p * p; i < prod; i += p)
+            {
+                wheel[i] &= ~(1 << (i % 30)); // Mark multiples of small primes
+            }
+        }
+
+        // Step 3: Process blocks of numbers using the wheel
+        const int block_size = (L + prod - 1) / prod * prod; // Align to wheel size
+        vector<unsigned char> block(block_size);             // Block storage
+
+        for (int start = 0; start < N / 30; start += block_size)
+        {
+            fill(block.begin(), block.end(), 0xFF); // Reset the block
+
+            // Mark multiples of primes in the block
+            for (int p : small_primes)
+            {
+                int first = max(p * p, (start + p - 1) / p * p); // Start marking
+                for (int i = first; i < start + block_size; i += p)
+                {
+                    block[i % block_size] &= ~(1 << (i % 30));
+                }
+            }
+
+            // Collect primes from the block
+            for (int i = 0; i < block_size && start + i < N / 30; ++i)
+            {
+                if (block[i] & (1 << (i % 30)))
+                {
+                    primes[prime_count++] = start + i;
+                }
+            }
+        }
+
+        primes.resize(prime_count); // Resize to actual number of primes found
+        return primes;
     }
 };
 struct SPF
