@@ -39,12 +39,13 @@ vector<vector<int>> newadj;
 // for directed
 void computeCompGraph(){
     //TODO initialize newadj 
+    //! newadj.assign(cnt, vector<int>());
     for (int i = 0; i < sz(adj); i++){
         for(int j = 0; j < sz(adj[i]); j++){
             int k = adj[i][j];
-            if(comp[k] != comp[i])
+            if(comp[k] != comp[i]){
                 newadj[comp[i]].push_back(comp[k]);
-                //! newadj[comp[k]].push_back(comp[i]);  for undirected
+            }
         }
     }
 }
@@ -98,5 +99,31 @@ void tarjan(int u, int p){
 
 
 int main(){
+    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+    int tc = 1;
+    // cin >> tc;
+    int i = 1;
+    while(tc--){
+        comps.clear();
+        cin >> n >> m;
+        adj.assign(n + 1, vector<int>());
+        for(int i = 0; i < m; i++){
+            int u, v;
+            cin >> u >> v;
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        dfsn.assign(n + 1, -1);
+        low.assign(n + 1, -1);
+        comp.assign(n + 1, -1);
+        instack.assign(n + 1, false);
+        idx = cnt = 0;
+        for(int i = 1; i <= n; i++){
+            if(dfsn[i] == -1){
+                tarjan(i, -1);
+            }
+        }
+        computeCompGraph();
+    }
     return 0;
 }
