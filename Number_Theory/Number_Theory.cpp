@@ -444,7 +444,7 @@ struct SPF
             if (spf[i] == i)
             {
 
-                for (int j = i * i; j < N; j += i)
+                for (int j = 2 * i; j < N; j += i)
                 {
                     if (spf[j] == j)
                     {
