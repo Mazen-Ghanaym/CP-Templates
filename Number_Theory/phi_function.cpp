@@ -20,6 +20,7 @@
 using namespace __gnu_pbds;
 using namespace std;
 
+// O(sqrt(n))
 int phi(int n) {
     int result = n;
     for (int i = 2; i * i <= n; i++) {
@@ -33,6 +34,20 @@ int phi(int n) {
         result -= result / n;
     return result;
 }
+// but what if you want to calculate phi for large numbers up to 10^18
+// then use pollard rho algorithm for factorization
+// we will use this formula to calculate phi for large numbers
+int phi_for_large_number(int n){
+    // assume that factorization of n is known and it will be done by pollard rho algorithm
+    vector<pair<int, int>> factors = pollared_rho_factorization(n);
+    int result = n;
+    for (auto [p, k] : factors) {
+        result -= result / p;
+    }
+    return result;
+}
+
+
 
 const int N = 1e6 + 5;
 vector<int> phi(N);
