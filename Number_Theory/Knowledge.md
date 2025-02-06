@@ -1,4 +1,7 @@
+# Number Theory Knowledge
+
 ## Application in Euler's theorem
+
 $\text{if } a \text{ and } m \text{ are relatively prime.}$
 $$a^{\phi(m)} \equiv 1 \pmod m \quad $$
 
