@@ -64,3 +64,10 @@ $$
 $$
 
 Thus, when $\text{pow} = 0$, setting it to $\phi(k)$ ensures the exponentiation still produces a meaningful result.
+
+---
+## Modular Inverse
+
+* For an arbitrary (but coprime) modulus $m$: $a ^ {\phi (m) - 1} \equiv a ^{-1} \mod m$
+* For a prime modulus $m$: $a ^ {m - 2} \equiv a ^ {-1} \mod m$
+* if a and m are coprime, then $a ^ {-1} \mod m$ can be found using the extended Euclidean algorithm.
