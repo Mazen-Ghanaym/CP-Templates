@@ -60,6 +60,29 @@ bool find_any_solution(int a, int b, int c, int &x0, int &y0, int &g)
     return true;
 }
 
+bool find_any_non_negative_solution(int a, int b, int c, int &x0, int &y0, int &g)
+{
+
+    if(!find_any_solution(a, b, c, x0, y0, g))
+        return false;
+
+    // find the solution with x >= 0 and y >= 0
+    int k = 0;
+    a /= g;
+    b /= g;
+    if(x0 < 0){
+        k = (abs(x0) + b - 1) / b;
+        x0 += k * b;
+        y0 -= k * a;
+    }
+    if(y0 < 0){
+        k = (abs(y0) + a - 1) / a;
+        x0 -= k * b;
+        y0 += k * a;
+    }
+    return (x0 >= 0 && y0 >= 0);
+}
+
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // getting all solutions
 // by adding b / g to x0 and subtract a / g from y0 will not break the equality
