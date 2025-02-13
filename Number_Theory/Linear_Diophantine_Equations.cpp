@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+va#include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 #define ll long long
@@ -60,6 +60,7 @@ bool find_any_solution(int a, int b, int c, int &x0, int &y0, int &g)
     return true;
 }
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // getting all solutions
 // by adding b / g to x0 and subtract a / g from y0 will not break the equality
 // x = x0 + k * (b / g), y = y0 - k * (a / g)
@@ -123,7 +124,25 @@ int find_all_solutions(int a, int b, int c, int minx, int maxx, int miny, int ma
         return 0;
     return (rx - lx) / abs(b) + 1;
 }
+// Finding the number of solutions and the solutions in a given interval
+// consider all cases any number can be in range -oo to +oo 
+int find_all_solutions_pre(int a, int b, int c, int minx, int maxx, int miny, int maxy){
+    if(a == 0 && b == 0){
+        if(c == 0) return (maxx - minx + 1) * (maxy - miny + 1);
+        return 0;
+    }
+    if(a == 0){
+        if(c % b == 0 && miny <= c / b && c / b <= maxy) return maxx - minx + 1;
+        return 0;
+    }
+    if(b == 0){
+        if(c % a == 0 && minx <= c / a && c / a <= maxx) return maxy - miny + 1;
+        return 0;
+    }
+    return find_all_solutions(a, b, c, minx, maxx, miny, maxy);
+}
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // find the solution with minimum x + y
 // Here, x  and y also need to be given some restriction, otherwise, the answer may become negative infinity.void solve(int tc)
 // We find any solution of the Diophantine equation, and then shift the solution to satisfy some conditions.
@@ -133,7 +152,7 @@ int find_all_solutions(int a, int b, int c, int minx, int maxx, int miny, int ma
 // If a=b , all solution will have the same sum   x + y.
 
 
-
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // solve ax + by + cz = d
 // gcd(a, b)(ax / gcd(a, b) + by / gcd(a, b)) + cz = d // denote w = ax / gcd(a, b) + by / gcd(a, b)
 // gcd(a, b)w + cz = d
@@ -165,19 +184,21 @@ bool find_any_solution3(int a, int b, int c, int d, int &x0, int &y0, int &z0, i
 }
 void solve(int tc)
 {
-    int x, y, z, g;
-    find_any_solution3(4, 8, 5, 7, x, y, z, g);
-    cout << x << sp << y << sp << z << sp << g << nl;
+    int a, b, c, x1, x2, y1, y2;
+    cin >> a >> b >> c >> x1 >> x2 >> y1 >> y2;
+    c = -c;
+    int ans = find_all_solutions_pre(a, b, c, x1, x2, y1, y2);
+    cout << ans << nl;
 }
 signed main(void)
 {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
-    // cin >> tc;
+    cin >> tc;
     int i = 1;
     while (tc--)
     {
-        // cout<<"Case #"<<i<<": ";
+        cout<<"Case "<<i<<": ";
         solve(i++);
     }
     return 0;
