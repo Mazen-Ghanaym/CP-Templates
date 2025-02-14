@@ -102,28 +102,19 @@ Thus, when $\text{pow} = 0$, setting it to $\phi(k)$ ensures the exponentiation 
 4. **Use the Chinese Remainder Theorem (CRT)**  
    - The prime-power factors $p_i^{a_i}$ are pairwise coprime.  
    - By CRT, if you know:
-     $$
-     x \equiv r_i \pmod{p_i^{a_i}}
-     $$
+     $$x \equiv r_i \pmod{p_i^{a_i}}$$
      for each $i$, then there is a **unique** solution for
-     $$
-     x \bmod \bigl(p_1^{a_1} \cdot p_2^{a_2} \cdots p_k^{a_k}\bigr),
-     $$
+     $$x \bmod \bigl(p_1^{a_1} \cdot p_2^{a_2} \cdots p_k^{a_k}\bigr),$$
      which is $x \bmod C$.
 
 5. **Example: $C = 12$**  
    1. Factor $12$ into prime powers: $12 = 2^2 \times 3^1$.  
    2. Compute:
-      $$
-      F(n) \bmod 4, \quad F(n) \bmod 3.
-      $$
+      $$F(n) \bmod 4, \quad F(n) \bmod 3.$$
    3. Combine the results using CRT:
       - Suppose $F(n) \equiv r_4 \pmod{4}$ and $F(n) \equiv r_3 \pmod{3}$.  
       - There is a unique $r_{12}$ with
-        $$
-        r_{12} \equiv r_4 \pmod{4}, \quad
-        r_{12} \equiv r_3 \pmod{3}.
-        $$
+        $$r_{12} \equiv r_4 \pmod{4}, \quad r_{12} \equiv r_3 \pmod{3}.$$
       - Then $r_{12} \equiv F(n) \pmod{12}$.
 
 ## **Chinese Remainder Theorem (CRT) Usage for Avoiding Overflow**
