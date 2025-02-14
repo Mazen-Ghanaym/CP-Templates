@@ -77,25 +77,25 @@ Thus, when $\text{pow} = 0$, setting it to $\phi(k)$ ensures the exponentiation 
 
 ### Notes
 
-1. 
+1.
    We want to compute:
    $
    F(n) \bmod C
    $
    where $C$ is **not** prime.
 
-2. **Why Factor $C$?**  
-   - When $C$ is prime, we can use straightforward tools (like Fermat’s Little Theorem) because $\mathbb{Z}/p\mathbb{Z}$ is a field.  
-   - For a composite $C$, $\mathbb{Z}/C\mathbb{Z}$ is **not** a field, so direct methods (inverses, etc.) can be more complicated.  
+1. **Why Factor $C$?**  
+   * When $C$ is prime, we can use straightforward tools (like Fermat’s Little Theorem) because $\mathbb{Z}/p\mathbb{Z}$ is a field.  
+   * For a composite $C$, $\mathbb{Z}/C\mathbb{Z}$ is **not** a field, so direct methods (inverses, etc.) can be more complicated.  
 
-3. **Factor $C$ into Prime Powers**  
+2. **Factor $C$ into Prime Powers**  
    - Express $C$ as:
      $
      C = p_1^{a_1} \times p_2^{a_2} \times \cdots \times p_k^{a_k}.
      $
    - Example: If $C = 12$, then $12 = 2^2 \times 3^1$.
 
-4. **Compute $F(n)$ Mod Each Prime Power**  
+3. **Compute $F(n)$ Mod Each Prime Power**  
    - For each prime power $p_i^{a_i}$, compute:
      $
      F(n) \bmod p_i^{a_i}.
@@ -105,7 +105,7 @@ Thus, when $\text{pow} = 0$, setting it to $\phi(k)$ ensures the exponentiation 
      - Hensel’s lemma (for certain polynomial lifts).
      - Lifting exponent lemmas (for factorials, binomial coefficients, etc.).
 
-5. **Use the Chinese Remainder Theorem (CRT)**  
+4. **Use the Chinese Remainder Theorem (CRT)**  
    - The prime-power factors $p_i^{a_i}$ are pairwise coprime.  
    - By CRT, if you know:
      $$
@@ -117,7 +117,7 @@ Thus, when $\text{pow} = 0$, setting it to $\phi(k)$ ensures the exponentiation 
      $$
      which is $x \bmod C$.
 
-6. **Example: $C = 12$**  
+5. **Example: $C = 12$**  
    1. Factor $12$ into prime powers: $12 = 2^2 \times 3^1$.  
    2. Compute:
       $$
