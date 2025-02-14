@@ -167,7 +167,7 @@ int find_all_solutions_pre(int a, int b, int c, int minx, int maxx, int miny, in
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // find the solution with minimum x + y
-// Here, x  and y also need to be given some restriction, otherwise, the answer may become negative infinity.void solve(int tc)
+// Here, x  and y  also need to be given some restriction, otherwise, the answer may become negative infinity.
 // We find any solution of the Diophantine equation, and then shift the solution to satisfy some conditions.
 // We can shift the solution to have x + y = x0 + y0 + k * (b / g - a / g) = x0 + y0 + k * (b - a) / g.
 // If a<b , we need to select the smallest possible value of k.
