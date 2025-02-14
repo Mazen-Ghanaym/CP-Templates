@@ -79,9 +79,7 @@ Thus, when $\text{pow} = 0$, setting it to $\phi(k)$ ensures the exponentiation 
 
 1.
    We want to compute:
-   $
-   F(n) \bmod C
-   $
+   $F(n) \bmod C$
    where $C$ is **not** prime.
 
 1. **Why Factor $C$?**  
@@ -90,16 +88,12 @@ Thus, when $\text{pow} = 0$, setting it to $\phi(k)$ ensures the exponentiation 
 
 2. **Factor $C$ into Prime Powers**  
    - Express $C$ as:
-     $
-     C = p_1^{a_1} \times p_2^{a_2} \times \cdots \times p_k^{a_k}.
-     $
+     $C = p_1^{a_1} \times p_2^{a_2} \times \cdots \times p_k^{a_k}.$
    - Example: If $C = 12$, then $12 = 2^2 \times 3^1$.
 
 3. **Compute $F(n)$ Mod Each Prime Power**  
    - For each prime power $p_i^{a_i}$, compute:
-     $
-     F(n) \bmod p_i^{a_i}.
-     $
+     $F(n) \bmod p_i^{a_i}.$
    - Techniques for prime powers often involve:
      - Euler’s theorem (generalized).
      - Hensel’s lemma (for certain polynomial lifts).
@@ -140,18 +134,18 @@ Thus, when $\text{pow} = 0$, setting it to $\phi(k)$ ensures the exponentiation 
 **Approach: Using Modular Arithmetic**
 1. **Select a Large Modulus $M$**  
    - Choose $M$ as a product of several prime numbers:  
-     $$ M = p_1 \times p_2 \times \dots \times p_k $$
+     $$M = p_1 \times p_2 \times \dots \times p_k$$
    - Ensure that $M$ is large enough (e.g., more than 32 bits).  
    - If $F(0) < M$, then computing $F(0) \mod M$ is equivalent to computing $F(0)$.
 
 2. **Break Down the Computation Using Primes**  
    - Instead of computing $F(0) \mod M$ directly, compute:  
-     $$ F(0) \mod p_1, \quad F(0) \mod p_2, \quad \dots, \quad F(0) \mod p_k $$
+     $$F(0) \mod p_1, \quad F(0) \mod p_2, \quad \dots, \quad F(0) \mod p_k$$
    - Each prime $p_i$ is small enough to avoid overflow.
 
 3. **Example of Prime Factorization**
    - Suppose we choose:
-     $$ M = 257 \times 263 \times 269 \times 271 $$
+     $$M = 257 \times 263 \times 269 \times 271$$
    - Each prime $p_i$ is small enough for safe modular computations.
 
 4. **Reconstruct the Result Using CRT**  
