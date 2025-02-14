@@ -20,26 +20,40 @@
 using namespace __gnu_pbds;
 using namespace std;
 
-// relative functions we use with CRT
-
-ll binary_exponentiation_mod(ll a, ll b, ll m)
+// Extended Euclidean Algorithm
+// ax + by = gcd(a, b)
+// x = x1 - y1 * (a / b)
+// y = y1
+// O(log(min(a, b)))
+int extended_gcd(int a, int b, int &x, int &y)
 {
-    // O(log(b))
-    ll ans = 1;
-    while (b)
+    if (b == 0)
     {
-        if (b & 1)
-            ans = (ans * a) % m;
-        a = (a * a) % m;
-        b >>= 1;
+        x = 1, y = 0;
+        return a;
     }
-    return ans;
+    int x1, y1;
+    int d = extended_gcd(b, a % b, x1, y1);
+    x = y1, y = x1 - y1 * (a / b);
+    return d;
 }
 
-ll modular_inverse(ll a, ll m)
+
+// Modular Inverse
+// a and m are coprime
+// ax + my = 1
+// denote x = a^-1
+// take mod m of all sides
+// ax = 1 (mod m)
+// so x is a^-1 mod m
+// O(log(min(a, m)))
+int mod_inverse(int a, int m)
 {
-    // O(log(m))
-    return binary_exponentiation_mod(a, m - 2, m);
+    int x, y;
+    int g = extended_gcd(a, m, x, y);
+    if (g != 1)
+        return -1;
+    return (x % m + m) % m;
 }
 
 int gcd(int a, int b, int &x, int &y)
@@ -80,15 +94,18 @@ bool find_any_solution(int a, int b, int c, int &x0, int &y0, int &g)
 // chinese remainder theorem (CRT)
 // x = ai (mod mi)
 // first case given set of relative prime mods
+// you must use the modular_inverse function that uses the extended euclidean algorithm
+// __int128_t can make compile error in some compilers
 ll CRT_1(vector<ll> &rems, vector<ll> mods)
 {
-    ll prod = 1, x = 0;
+    __int128_t prod = 1, x = 0;
     for (auto m : mods)
         prod *= m;
+    assert(prod <= 1e18);
     for (int i = 0; i < sz(rems); i++)
     {
-        ll pp = prod / mods[i];
-        x +=  pp * modular_inverse(pp, mods[i]) * rems[i];
+        __int128_t pp = prod / mods[i];
+        x +=  pp * mod_inverse(pp, mods[i]) * rems[i]; // can be overflow
     }
     return x % prod;
 }
@@ -100,8 +117,10 @@ ll CRT_1(vector<ll> &rems, vector<ll> mods)
 // x + kN = y + pM  =>  k*N - p*M = y - x => linear diophantine equation
 // new mod = lcm(N, M)
 // new rem = T mod new mod
+// __int128_t can make compile error in some compilers
+// O(n * log(min(mi)))
 ll CRT_2(vector<ll> &rems, vector<ll> mods){
-    ll rem = rems[0], mod = mods[0];
+    __int128_t rem = rems[0], mod = mods[0];
     for (int i = 1; i < rems.size(); i++){
         int x, y, g, a = mod, b = -mods[i], c = rems[i] - rem;
         if(!find_any_solution(a, b, c, x, y, g)){
