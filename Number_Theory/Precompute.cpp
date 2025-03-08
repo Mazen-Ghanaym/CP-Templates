@@ -50,6 +50,11 @@ void precompute()
         inv[i] = (inv[i + 1] * (i + 1)) % MOD;
 }
 
+static const int initialize = []() {
+    precompute();
+    return 0;
+}();
+
 int nCr(int n, int r)
 {
     if (r > n)
