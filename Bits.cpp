@@ -9,4 +9,6 @@
     __builtin_ffsll(n) returns the index of the least significant set bit in n (long long).
     __builtin_parity(n) returns the parity of n (number of set bits modulo 2).
     __builtin_parityll(n) returns the parity of n (number of set bits modulo 2) (long long).
+    a + b = a ^ b + (a & b) << 1
+    a + b = (a | b) << 1 - (a ^ b)
 */
