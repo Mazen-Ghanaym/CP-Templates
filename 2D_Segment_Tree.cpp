@@ -59,11 +59,9 @@ struct SegTree2D
 {
     int n, m;
     vector<vector<int>> t;
-    SegTree2D(int n, int m) : n(n), m(m), t(4 * n, vector<int>(4 * m)) {}
-    SegTree2D(int n, int m, vector<vector<int>> &a) : n(n), m(m), t(4 * n, vector<int>(4 * m))
-    {
-        build(a);
-    }
+    int Default = 0; // default value for the segment tree and return value for invalid queries
+    SegTree2D(int n, int m) : n(n), m(m), t(4 * n, vector<int>(4 * m, Default)) {}
+    SegTree2D(int n, int m, vector<vector<int>> &a) : n(n), m(m), t(4 * n, vector<int>(4 * m, Default)){ build(a); }
     void build_y(int vx, int lx, int rx, int vy, int ly, int ry, vector<vector<int>> &a)
     {
         if (ly == ry)
@@ -105,7 +103,7 @@ struct SegTree2D
     int query_y(int vx, int vy, int tly, int try_, int ly, int ry)
     {
         if (ly > ry)
-            return 0;
+            return Default;
         if (ly == tly && try_ == ry)
             return t[vx][vy];
         int tmy = (tly + try_) / 2;
@@ -115,7 +113,7 @@ struct SegTree2D
     int query_x(int vx, int tlx, int trx, int lx, int rx, int ly, int ry)
     {
         if (lx > rx)
-            return 0;
+            return Default;
         if (lx == tlx && trx == rx)
             return query_y(vx, 1, 1, m, ly, ry);
         int tmx = (tlx + trx) / 2;
