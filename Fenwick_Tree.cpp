@@ -26,8 +26,31 @@ void fastio()
         freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
     #endif
 }
+// Fenwich Tree
+// x & -x -> lowest bit of x
+// 12 & -12 = 1100 & 0100 = 0100
+// 8 & -8 = 1000 & 1000 = 1000
+// 12 - (12 & -12) = 12 - 4 = 8
+// 8 - (8 & -8) = 8 - 8 = 0
+// so each number store the sum of last lowest bit numbers
+// 12 = 1100 -> 12 - 8 = 4 -> 4 = 100 so 12 store the sum from 9 to 12
+// 8 = 1000 -> 8 - 8 = 0 -> 0 = 0 so 8 store the sum from 1 to 8
+// when we update index we want to know the numbers greater than it and contains this number in their sum
+// add the lowest bit will give us the next number that contains this number in its sum
+// 12 + 4 = 16 -> 16 = 10000 so 16 store the sum from 1 to 16
+// 16 + 16 = 32 -> 32 = 100000 so 32 store the sum from 1 to 32 and so on
+// so we can update the numbers in log(n) time
+// and query the sum of numbers in log(n) time
+
+// 1-based Fenwick Tree
+//   pass 0-based array to the constructor
+//   based 1 update and query
+// 0-based Fenwick Tree
+//   pass 0-based array to the constructor
+//   based 0 update and query
+template<bool one_based = true>
 struct FenwickTree {
-    vector<int> bit;  // binary indexed tree
+    vector<int> bit;
     int n;
 
     FenwickTree(int n) {
@@ -38,28 +61,53 @@ struct FenwickTree {
     FenwickTree(vector<int> a)
         : FenwickTree(a.size()) {
         for (size_t i = 0; i < a.size(); i++)
-            add(i, a[i]);
+            add(i + one_based, a[i]);
     }
 
     int sum(int idx) {
         int ret = 0;
-        for (++idx; idx > 0; idx -= idx & -idx)
+        for (idx += (!one_based); idx > 0; idx -= idx & -idx){
             ret += bit[idx];
+        }
         return ret;
     }
 
     int sum(int l, int r) {
-        return sum(r) - sum(l - 1);
+        return sum(r) - (l - 1 >= 0 ? sum(l - 1) : 0);
     }
 
     void add(int idx, int delta) {
-        for (++idx; idx < n; idx += idx & -idx)
+        for (idx += (!one_based); idx < n; idx += idx & -idx){
             bit[idx] += delta;
+        }
     }
 };
 void solve(int tc)
 {
-    
+    int n, q;
+    cin >> n >> q;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    FenwickTree<1> ft(a);
+    while (q--)
+    {
+        int t;
+        cin >> t;
+        if (t == 1)
+        {
+            int k, u;
+            cin >> k >> u;
+            ft.add(k, u);
+            a[k] = u;
+        }
+        else
+        {
+            int l, r;
+            cin >> l >> r;
+            cout << ft.sum(l, r) << nl;
+        }
+    }
 }
 signed main(void)
 {
