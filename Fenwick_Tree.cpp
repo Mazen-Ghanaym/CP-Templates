@@ -19,13 +19,6 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio()
-{
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-    #endif
-}
 // Fenwich Tree
 // x & -x -> lowest bit of x
 // 12 & -12 = 1100 & 0100 = 0100
@@ -48,6 +41,9 @@ void fastio()
 // 0-based Fenwick Tree
 //   pass 0-based array to the constructor
 //   based 0 update and query
+
+// for range update and point query we use the difference array trick
+// add(l, val) , add(r + 1, -val)
 template<bool one_based = true>
 struct FenwickTree {
     vector<int> bit;
@@ -81,6 +77,13 @@ struct FenwickTree {
             bit[idx] += delta;
         }
     }
+
+    void update_range(int l, int r, int val)
+    {
+        add(l, val);
+        add(r + 1, -val);
+    }
+
 };
 void solve(int tc)
 {
@@ -111,7 +114,7 @@ void solve(int tc)
 }
 signed main(void)
 {
-    fastio();
+    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
     //cin >> tc;
     int i = 1;
