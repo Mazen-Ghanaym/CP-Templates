@@ -81,9 +81,9 @@ struct Matrix
         Matrix c(n, b.m);
         for (int i = 0; i < n; i++)
         {
-            for (int j = 0; j < b.m; j++)
+            for (int k = 0; k < m; k++)
             {
-                for (int k = 0; k < m; k++)
+                for (int j = 0; j < b.m; j++)
                 {
                     c.mat[i][j] = add_mod(c.mat[i][j], mult_mod(mat[i][k], b.mat[k][j], MOD), MOD);
                 }
