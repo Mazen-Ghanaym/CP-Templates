@@ -84,6 +84,28 @@ struct FenwickTree {
         add(r + 1, -val);
     }
 
+    int lower_bound(int x) {
+        int idx = 0, mask = 1;
+        while (mask < n) mask <<= 1;
+        for (mask >>= 1; mask > 0; mask >>= 1) {
+            if (idx + mask < n && bit[idx + mask] < x) {
+                x -= bit[idx + mask];
+                idx += mask;
+            }
+        }
+        return idx + one_based;
+    }
+    int upper_bound(int x) {
+        int idx = 0, mask = 1;
+        while (mask < n) mask <<= 1;
+        for (mask >>= 1; mask > 0; mask >>= 1) {
+            if (idx + mask < n && bit[idx + mask] <= x) {
+                x -= bit[idx + mask];
+                idx += mask;
+            }
+        }
+        return idx + one_based;
+    }
 };
 void solve(int tc)
 {
