@@ -341,92 +341,125 @@ struct Sieve
     }
 
     // Function to generate primes up to N using a highly optimized sieve
-    vector<int> sieve(int N, int Q = 17, int L = 1 << 15)
+    // O(N / log(N))
+    // Number of primes up to 1e9 is 8702706
+    // Approximate prime count using the formula pi(N) ~ N / log(N)
+    vector<int> sieve(const int N, const int Q = 17, const int L = 1 << 15)
     {
-        // O(N / log(N))
-        // Number of primes up to 1e9 is 8702706
-        // Residue values for numbers coprime to 2, 3, 5 in mod 30
-        const int residues[] = {1, 7, 11, 13, 17, 19, 23, 29};
+        // Residues mod 30 that are coprime with 30.
+        static const int residues[8] = {1, 7, 11, 13, 17, 19, 23, 29};
 
-        // Approximate prime count using the formula pi(N) ~ N / log(N)
-        auto approx_prime_count = [](int N)
+        // Structure to store prime and initial positions for each residue.
+        struct PrimeData
         {
-            return (N > 60184) ? N / (log(N) - 1.1) : max(1.0, N / (log(N) - 1.11)) + 1;
+            int prime;
+            int pos[8]; // For each residue in 'residues'
+            PrimeData(int p) : prime(p) {}
         };
 
-        int sqrtN = sqrt(N);         // Square root of N
-        int sqrtSqrtN = sqrt(sqrtN); // Square root of sqrt(N)
-
-        // Step 1: Sieve up to sqrt(N) to find small primes
-        vector<bool> is_prime(sqrtN + 1, true);
-        for (int i = 2; i <= sqrtSqrtN; ++i)
+        // Approximate number of primes up to N (for reserving space).
+        auto approxPrimeCount = [&](int n) -> int
         {
-            if (is_prime[i])
+            return (n > 60184) ? n / (log(n) - 1.1)
+                               : max(1.0, n / (log(n) - 1.11)) + 1;
+        };
+
+        int lim = sqrt(N), limSqrt = sqrt(lim);
+        // Sieve up to lim to mark small primes.
+        vector<bool> isPrime(lim + 1, true);
+        for (int i = 2; i <= limSqrt; ++i)
+            if (isPrime[i])
+                for (int j = i * i; j <= lim; j += i)
+                    isPrime[j] = false;
+
+        int rsize = approxPrimeCount(N + 30);
+        // Start with known small primes.
+        vector<int> primes = {2, 3, 5};
+        int primeCount = 3;
+        primes.resize(rsize);
+
+        vector<PrimeData> primeDataList;
+        size_t baseCount = 0; // Count of primes <= Q used for wheel construction
+        int wheelProd = 1;    // Product of small primes (<= Q)
+
+        // Process primes from 7 to lim.
+        for (int p = 7; p <= lim; ++p)
+        {
+            if (!isPrime[p])
+                continue;
+            if (p <= Q)
             {
-                for (int j = i * i; j <= sqrtN; j += i)
-                    is_prime[j] = false;
+                wheelProd *= p;
+                ++baseCount;
+                primes[primeCount++] = p;
+            }
+            PrimeData pd(p);
+            // For each residue class, find the first multiple of p
+            // that is congruent to that residue mod 30.
+            for (int t = 0; t < 8; ++t)
+            {
+                int candidate = (p <= Q) ? p : p * p;
+                while (candidate % 30 != residues[t])
+                    candidate += p << 1; // candidate += 2*p
+                pd.pos[t] = candidate / 30;
+            }
+            primeDataList.push_back(pd);
+        }
+
+        // Precompute a base wheel array of size = wheelProd.
+        vector<unsigned char> baseWheel(wheelProd, 0xFF);
+        for (size_t i = 0; i < baseCount; ++i)
+        {
+            auto pp = primeDataList[i];
+            int p = pp.prime;
+            for (int t = 0; t < 8; ++t)
+            {
+                unsigned char mask = ~(1 << t);
+                for (int j = pp.pos[t]; j < wheelProd; j += p)
+                    baseWheel[j] &= mask;
             }
         }
 
-        // Collect small primes and initialize variables
-        vector<int> primes = {2, 3, 5};       // Small primes
-        vector<int> small_primes;             // Small primes used for wheel
-        int prime_count = 3;                  // Number of primes found so far
-        primes.resize(approx_prime_count(N)); // Allocate space for all primes
+        // Process blocks of indices (each index represents a candidate of form 30*k + r)
+        int blockSize = ((L + wheelProd - 1) / wheelProd) * wheelProd;
+        vector<unsigned char> block(blockSize);
+        unsigned char *blockPtr = block.data();
+        int totalSlots = (N + 29) / 30; // total slots covering numbers up to N
 
-        for (int p = 7; p <= sqrtN; ++p)
+        // Sieve each block and collect primes.
+        for (int start = 0; start < totalSlots; start += blockSize, blockPtr -= blockSize)
         {
-            if (is_prime[p])
+            int end = min(totalSlots, start + blockSize);
+            // Copy base wheel into current block positions.
+            for (int i = start; i < end; i += wheelProd)
+                copy(baseWheel.begin(), baseWheel.end(), blockPtr + i);
+            // The number 1 is not prime.
+            if (start == 0)
+                blockPtr[0] &= 0xFE;
+            // For primes greater than Q, mark multiples in the block.
+            for (size_t i = baseCount; i < primeDataList.size(); ++i)
             {
-                primes[prime_count++] = p;
-                if (p <= Q)
-                    small_primes.push_back(p);
-            }
-        }
-
-        // Step 2: Precompute the wheel pattern for small primes
-        int prod = 1;
-        for (int p : small_primes)
-            prod *= p;
-
-        vector<unsigned char> wheel(prod, 0xFF); // Initialize wheel (all bits set)
-        for (int p : small_primes)
-        {
-            for (int i = p * p; i < prod; i += p)
-            {
-                wheel[i] &= ~(1 << (i % 30)); // Mark multiples of small primes
-            }
-        }
-
-        // Step 3: Process blocks of numbers using the wheel
-        const int block_size = (L + prod - 1) / prod * prod; // Align to wheel size
-        vector<unsigned char> block(block_size);             // Block storage
-
-        for (int start = 0; start < N / 30; start += block_size)
-        {
-            fill(block.begin(), block.end(), 0xFF); // Reset the block
-
-            // Mark multiples of primes in the block
-            for (int p : small_primes)
-            {
-                int first = max(p * p, (start + p - 1) / p * p); // Start marking
-                for (int i = first; i < start + block_size; i += p)
+                auto &pd = primeDataList[i];
+                int p = pd.prime;
+                for (int t = 0; t < 8; ++t)
                 {
-                    block[i % block_size] &= ~(1 << (i % 30));
+                    int pos = pd.pos[t];
+                    unsigned char mask = ~(1 << t);
+                    for (; pos < end; pos += p)
+                        blockPtr[pos] &= mask;
+                    pd.pos[t] = pos;
                 }
             }
-
-            // Collect primes from the block
-            for (int i = 0; i < block_size && start + i < N / 30; ++i)
+            // Collect primes from the block.
+            for (int i = start; i < end; ++i)
             {
-                if (block[i] & (1 << (i % 30)))
-                {
-                    primes[prime_count++] = start + i;
-                }
+                for (int mask = blockPtr[i]; mask > 0; mask &= mask - 1)
+                    primes[primeCount++] = i * 30 + residues[__builtin_ctz(mask)];
             }
         }
-
-        primes.resize(prime_count); // Resize to actual number of primes found
+        while (primeCount > 0 && primes[primeCount - 1] > N)
+            --primeCount;
+        primes.resize(primeCount);
         return primes;
     }
 };
