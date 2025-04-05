@@ -51,6 +51,8 @@ struct PST
 
     PST(int n = 0, T lx = -1e9, T rx = 1e9) : N(n), Lx(lx), Rx(rx) {}
 
+    // use build if the nums represents the frequency of the elements
+    // and the elements are in the range [1, n]
     Node *build(const vector<T> &nums, T l, T r)
     {
         if (l == r)
@@ -102,7 +104,7 @@ struct PST
             return new Node(); // Base case for out-of-range interval
         if (lx >= l && rx <= r)
             return root;
-        int mx = (lx + rx) / 2;
+        int mx = lx + (rx - lx) / 2;
         Node *L = query(root->left, l, r, lx, mx);
         Node *R = query(root->right, l, r, mx + 1, rx);
         return merge(L, R);
