@@ -182,17 +182,9 @@ struct Treap
         return lower_bound(root, val);
     };
     // upper_bound returns the index of the first element > val
-    int upper_bound(node *root, const DataType &val)
-    {
-        if (root == EMPTY)
-            return 0;
-        if (val < root->val)
-            return upper_bound(root->ch[L], val);
-        return root->ch[L]->size + root->frq + upper_bound(root->ch[R], val);
-    };
     int upper_bound(const DataType &val)
     {
-        return upper_bound(root, val);
+        return lower_bound(val + 1);
     };
     // print
     void print(node *root, int d = 0)
