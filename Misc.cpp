@@ -25,15 +25,26 @@ inline int random(int l, int r)
 {
     return rnd() % (r - l + 1) + l;
 }
+
+// another way to generate random
+mt19937 seed{random_device{}()};
+uniform_int_distribution<int> rnd(INT_MIN, INT_MAX);
+inline int random()
+{
+    return rnd(seed);
+}
+inline int random(int l, int r)
+{
+    return uniform_int_distribution<int>(l, r)(seed);
+}
 void solve(int tc)
 {
-    
 }
 signed main(void)
 {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     int i = 1;
     while (tc--)
     {
