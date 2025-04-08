@@ -26,6 +26,10 @@ void fastio()
         freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
     #endif
 }
+//!!!! if time limit -> use set
+//!!!! if time limit -> use set
+//!!!! if time limit -> use set
+//!!!! if time limit -> use set
 template <typename T = int, const int N = 100005>
 class MEX{
     public:
