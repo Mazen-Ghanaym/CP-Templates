@@ -149,6 +149,25 @@ struct Treap
         return getSum(root, s, e);
     }
 
+    void swapSegments(int l1, int r1, int l2, int r2) {
+        // 1) Split off [0..r2]
+        auto [t01, E] = split(root, r2 + 1);
+        // 2) Split t01 into [0..l2-1] and [l2..r2]
+        auto [t02, D] = split(t01, l2);
+        // 3) Split t02 into [0..r1] and [r1+1..l2-1]
+        auto [t03, C] = split(t02, r1 + 1);
+        // 4) Split t03 into [0..l1-1] and [l1..r1]
+        auto [A, B] = split(t03, l1);
+    
+        // Now A, B, C, D, E are the five pieces.
+        // Re‐merge as A + D + C + B + E
+        root = merge(A, merge(D, merge(C, merge(B, E))));
+    }
+    
+    void swap(int l1, int r1, int l2, int r2) {
+        swapSegments(l1, r1, l2, r2);
+    }
+    
     void print(node *cur, int d)
     {
         if (cur == EMPTY)
