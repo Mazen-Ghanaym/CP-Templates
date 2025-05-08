@@ -22,6 +22,7 @@ using namespace std;
 // Implicit Treap
 // Balanced Binary Search Tree with random priority and it's height is around 2 * log(n)
 // can do like ordered statistics tree and more
+// 0 based indexing
 //! don't forget to set the seed for random number generator
 //! don't forget to set the seed for random number generator
 mt19937 eng(0);
@@ -122,6 +123,17 @@ struct Treap
     void insert(int val)
     {
         root = merge(root, new node(val));
+    }
+    void insert(int val, int idx)
+    {
+        auto [bef, aft] = split(root, idx);
+        root = merge(merge(bef, new node(val)), aft);
+    }
+    
+    void eraseindex(int idx){
+        auto [bef, aft] = split(root, idx + 1);
+        auto [bef2, aft2] = split(bef, idx);
+        root = merge(bef2, aft);
     }
     void addRange(node *&root, int s, int e, DataType v)
     {
