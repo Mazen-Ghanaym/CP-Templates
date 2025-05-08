@@ -19,13 +19,6 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio()
-{
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-#endif
-}
 struct KMP
 {
     string pattern;
@@ -39,9 +32,25 @@ struct KMP
     void build()
     {
         int n = sz(pattern);
-        lp.resize(n);
+        lp.assing(n, 0);
         for (int i = 1; i < n; i++)
             lp[i] = failure(lp[i - 1], pattern[i]);
+    }
+
+    // build non overlapping longest suffix equal to proper prefix
+    // for example, for ababab, the longest non overlapping suffixes respectively '', '', 'a', 'ab', 'a', 'ab'
+    void build_non_overlapping()
+    {
+        int n = sz(pattern);
+        lp.assign(n, 0);
+        for (int i = 1; i < n; i++){
+            int j = lp[i - 1];
+            while (j > 0 && pattern[j] != pattern[i])
+                j = lp[j - 1];
+            lp[i] = j + (pattern[j] == pattern[i]);
+            if(lp[i] * 2 == i + 1) // non overlapping condition
+                lp[i] = lp[lp[i] - 1]; // remove the last one
+        }
     }
 
     int failure(int idx, char nxt)
