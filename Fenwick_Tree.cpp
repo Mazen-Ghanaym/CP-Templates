@@ -49,7 +49,7 @@ struct FenwickTree {
     vector<int> bit;
     int n;
 
-    FenwickTree(int n) {
+    FenwickTree(int n = 0) {
         this->n = n + 1;
         bit.assign(n + 1, 0);
     }
@@ -78,6 +78,16 @@ struct FenwickTree {
         }
     }
 
+    int get(int idx)
+    {
+        return sum(idx) - sum(idx - 1);
+    }
+ 
+    void set(int idx, int val)
+    {
+        add(idx, val - get(idx));
+    }
+    
     void update_range(int l, int r, int val)
     {
         add(l, val);
