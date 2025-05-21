@@ -1,51 +1,139 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-#define ll long long
-#define ull unsigned long long
-#define ld long double
-#define int long long
-#define nl "\n"
-#define oo 1e9 + 1
-#define OO 1e18 + 1
-#define sp ' '
-#define sz(x) (int)(x.size())
-#define MOD 1000000007
-#define fixed(n) fixed << setprecision(n)
-#define sub_mod(a, b, m) ((((a) % m) - ((b) % m) + m) % m)
-#define add_mod(a, b, m) ((((a) % m) + ((b) % m)) % m)
-#define mult_mod(a, b, m) ((((a) % m) * ((b) % m)) % m)
-#define EPS 1e-9
-#define PI acos(-1)
-using namespace __gnu_pbds;
 using namespace std;
-bool isp(int n)
+
+#define ll long long
+#define ld long double
+#define nl "\n"
+#define sz(x) (int)(x.size())
+#define all(x) (x).begin(), (x).end()
+#define EPS 1e-9
+
+struct Point
 {
-    if (n < 2)
-        return false;
-    for (int i = 2; i * i <= n; i++)
-        if (n % i == 0)
-            return false;
-    return true;
+    ll x, y;
+
+    Point(ll x = 0, ll y = 0) : x(x), y(y) {}
+
+    bool operator<(const Point &p) const
+    {
+        return x < p.x || (x == p.x && y < p.y);
+    }
+
+    bool operator==(const Point &p) const
+    {
+        return x == p.x && y == p.y;
+    }
+
+    Point operator-(const Point &p) const
+    {
+        return Point(x - p.x, y - p.y);
+    }
+};
+
+// Returns 2 times the signed area of the triangle formed by points p, q, and r
+ll cross(const Point &O, const Point &A, const Point &B)
+{
+    return (A.x - O.x) * (B.y - O.y) - (A.y - O.y) * (B.x - O.x);
 }
-void solve(int tc)
+
+// Returns true if points p, q, r make a counter-clockwise turn
+bool ccw(const Point &p, const Point &q, const Point &r)
 {
-    int cnt = 0;
-    for (int i = 2; i < = 1000; i++)
-        if(isp(i))
-            cnt++;
-    cout << cnt << nl;
+    return cross(p, q, r) > 0;
 }
-signed main(void)
+
+// Returns distance between two points
+ld dist(const Point &p1, const Point &p2)
 {
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+    return hypot(p1.x - p2.x, p1.y - p2.y);
+}
+
+// Computes the convex hull of a set of points
+// Returns points in counter-clockwise order
+vector<Point> convexHull(vector<Point> points)
+{
+    int n = sz(points);
+    if (n <= 2)
+        return points;
+
+    // Find the bottommost point (and leftmost if tied)
+    int basePoint = 0;
+    for (int i = 1; i < n; i++)
+    {
+        if (points[i].y < points[basePoint].y ||
+            (points[i].y == points[basePoint].y && points[i].x < points[basePoint].x))
+        {
+            basePoint = i;
+        }
+    }
+
+    // Put the base point at position 0
+    swap(points[0], points[basePoint]);
+
+    // Sort points by polar angle with respect to base point
+    Point p0 = points[0];
+    sort(points.begin() + 1, points.end(), [&p0](const Point &p1, const Point &p2)
+         {
+        ll c = cross(p0, p1, p2);
+        if (c != 0) return c > 0;
+        return dist(p0, p1) < dist(p0, p2); });
+
+    // Build convex hull
+    vector<Point> hull;
+    hull.push_back(points[0]);
+    hull.push_back(points[1]);
+
+    for (int i = 2; i < n; i++)
+    {
+        while (sz(hull) >= 2 && !ccw(hull[sz(hull) - 2], hull[sz(hull) - 1], points[i]))
+        {
+            hull.pop_back();
+        }
+        hull.push_back(points[i]);
+    }
+
+    return hull;
+}
+
+// Example usage
+void solve()
+{
+    int n;
+    cin >> n;
+    vector<Point> points(n);
+    for (auto &p : points)
+    {
+        cin >> p.x >> p.y;
+    }
+
+    vector<Point> hull = convexHull(points);
+
+    // Output hull points
+    cout << sz(hull) << nl;
+    for (const auto &p : hull)
+    {
+        cout << p.x << " " << p.y << nl;
+    }
+
+    // Calculate perimeter (optional)
+    ld perimeter = 0;
+    for (int i = 0; i < sz(hull); i++)
+    {
+        perimeter += dist(hull[i], hull[(i + 1) % sz(hull)]);
+    }
+    cout << fixed << setprecision(9) << perimeter << nl;
+}
+
+signed main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     int tc = 1;
-    //cin >> tc;
-    int i = 1;
+    // cin >> tc;
     while (tc--)
     {
-        // cout<<"Case #"<<i<<": ";
-        solve(i++);
+        solve();
     }
     return 0;
 }
