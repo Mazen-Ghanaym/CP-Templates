@@ -3,39 +3,39 @@
 Suppose we want the number of ordered $n$-tuples
 
 $$
-  (x_1, x_2, \dots, x_n)
+    (x_1, x_2, \dots, x_n)
 $$
 
 of nonnegative integers satisfying
 
 $$
-  x_1 + x_2 + \cdots + x_n \;=\; S,
-  \quad
-  0 \;\le\; x_i \;\le\; U \;\;(\forall i).
+    x_1 + x_2 + \cdots + x_n = S,
+    \quad
+    0 \le x_i \le U (\forall i).
 $$
 
 Denote this count by
 
 $$
-  F(n,\,S;\,U).
+    F(n,S;U).
 $$
 
 ---
 
-## 1. The “Unbounded” Baseline
+## 1. The "Unbounded" Baseline
 
 If there were **no upper bound** on each $x_i$ (only $x_i \ge 0$), then the number of solutions to
 
 $$
-  x_1 + \cdots + x_n \;=\; S,
-  \quad x_i \ge 0
+    x_1 + \cdots + x_n = S,
+    \quad x_i \ge 0
 $$
 
 is given by the stars‐and‐bars formula:
 
 $$
-  G(n,S)
-  \;=\; \binom{\,n + S - 1\,}{\,S\,}.
+    G(n,S)
+    = \binom{n + S - 1}{S}.
 $$
 
 ---
@@ -45,34 +45,34 @@ $$
 We want to exclude any solution in which some $x_i > U$.  Define
 
 $$
-  A_i \;=\;\bigl\{\text{solutions with }x_i \ge U+1\bigr\}.
+    A_i =\bigl\{\text{solutions with }x_i \ge U+1\bigr\}.
 $$
 
 By inclusion–exclusion,
 
 $$
-  F(n,S;U)
-  \;=\; \bigl|\{\sum x_i = S,\;x_i \ge 0\}\bigr|
-  \;-\; \bigl|\,A_1 \cup \cdots \cup A_n\,\bigr|.
+    F(n,S;U)
+    = \bigl|\{\sum x_i = S,x_i \ge 0\}\bigr|
+    - \bigl|A_1 \cup \cdots \cup A_n\bigr|.
 $$
 
 In expanded form:
 
 $$
-  F(n,S;U)
-  \;=\;
-  \sum_{r=0}^{\,n} (-1)^r \sum_{1 \le i_1 < \cdots < i_r \le n}
-  \;\Bigl|\;A_{i_1}\cap \cdots \cap A_{i_r}\Bigr|.
+    F(n,S;U)
+    =
+    \sum_{r=0}^{n} (-1)^r \sum_{1 \le i_1 < \cdots < i_r \le n}
+    \Bigl|A_{i_1}\cap \cdots \cap A_{i_r}\Bigr|.
 $$
 
 If $r$ specific indices are forced to satisfy $x_{i_k} \ge U+1$, shift each of those by $(U+1)$.  The total sum then becomes $S - r(U+1)$, distributed freely among all $n$ variables:
 
 $$
-  \bigl|\;A_{i_1}\cap \cdots \cap A_{i_r}\bigr|
-  \;=\;
-  G\bigl(n,\;S - r(U+1)\bigr)
-  \;=\;
-  \binom{\,n + \bigl(S - r(U+1)\bigr) - 1\,}{\,S - r(U+1)\,},
+    \bigl|A_{i_1}\cap \cdots \cap A_{i_r}\bigr|
+    =
+    G\bigl(n,S - r(U+1)\bigr)
+    =
+    \binom{n + \bigl(S - r(U+1)\bigr) - 1}{S - r(U+1)},
 $$
 
 provided $S - r(U+1)\ge0$.  Summing over all choices of $r$ variables ($\binom{n}{r}$ ways) yields the final closed‐form.
@@ -82,16 +82,16 @@ provided $S - r(U+1)\ge0$.  Summing over all choices of $r$ variables ($\binom{n
 ## 3. Final Formula
 
 $$
-  \boxed{
-    F(n,\,S;\,U)
-    \;=\;
-    \sum_{r = 0}^{\lfloor\,S/(U+1)\rfloor}
-    \;(-1)^r \;\binom{n}{r}\;
-    \binom{\,n + \bigl(S - r(U+1)\bigr) - 1\,}{\,S - r(U+1)\,}.
-  }
+    \boxed{
+        F(n,S;U)
+        =
+        \sum_{r = 0}^{\lfloor S/(U+1)\rfloor}
+        (-1)^r \binom{n}{r}
+        \binom{n + \bigl(S - r(U+1)\bigr) - 1}{S - r(U+1)}.
+    }
 $$
 
-* If $S < 0$ or $S > n\,U$, then $F(n,S;U) = 0$.
+* If $S < 0$ or $S > nU$, then $F(n,S;U) = 0$.
 * Otherwise, let $r_{\max} = \lfloor S/(U+1)\rfloor$.
 
 ---
@@ -100,31 +100,31 @@ $$
 
 1. **Unrestricted ($U=\infty$)**: Then $(U+1) > S$, so only $r=0$ survives.  We recover
 
-   $$
-     F(n,S;\infty) \;=\; \binom{\,n+S-1\,}{\,S\,}.
-   $$
+     $$
+         F(n,S;\infty) = \binom{n+S-1}{S}.
+     $$
 
 2. **Binary Variables ($U=1$)**: Each $x_i \in \{0,1\}$.  We get
 
-   $$
-     F(n,S;1)
-     \;=\;
-     \sum_{r=0}^{\lfloor S/2\rfloor}
-       (-1)^r \binom{n}{r} \binom{\,n + (S-2r) - 1\,}{\,S - 2r\,}.
-   $$
+     $$
+         F(n,S;1)
+         =
+         \sum_{r=0}^{\lfloor S/2\rfloor}
+             (-1)^r \binom{n}{r} \binom{n + (S-2r) - 1}{S - 2r}.
+     $$
 
-   A direct combinatorial argument shows this equals $\binom{n}{S}$.
+     A direct combinatorial argument shows this equals $\binom{n}{S}$.
 
 3. **Ternary Bound ($U=2$)**: Each $x_i \in \{0,1,2\}$.  Then
 
-   $$
-     F(n,S;2)
-     \;=\;
-     \sum_{r=0}^{\lfloor S/3\rfloor}
-       (-1)^r \binom{n}{r} \binom{\,n + (S - 3r) - 1\,}{\,S - 3r\,}.
-   $$
+     $$
+         F(n,S;2)
+         =
+         \sum_{r=0}^{\lfloor S/3\rfloor}
+             (-1)^r \binom{n}{r} \binom{n + (S - 3r) - 1}{S - 3r}.
+     $$
 
-   This was exactly the core subproblem when counting “7/8/9 slices summing to $K$.”
+     This was exactly the core subproblem when counting "7/8/9 slices summing to $K$."
 
 ---
 
