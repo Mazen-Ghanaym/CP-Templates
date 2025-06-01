@@ -100,29 +100,29 @@ $$
 
 1. **Unrestricted ($U=\infty$)**: Then $(U+1) > S$, so only $r=0$ survives. We recover
 
-     $$
-         F(n,S;\infty) = \binom{n+S-1}{S}.
-     $$
+    $$
+        F(n,S;\infty) = \binom{n+S-1}{S}.
+    $$
 
 2. **Binary Variables ($U=1$)**: Each $x_i \in \{0,1\}$. We get
 
-     $$
-         F(n,S;1)
-         =
-         \sum_{r=0}^{\lfloor S/2\rfloor}
-             (-1)^r \binom{n}{r} \binom{n + (S-2r) - 1}{S - 2r}.
-     $$
+    $$
+        F(n,S;1)
+        =
+        \sum_{r=0}^{\lfloor S/2\rfloor}
+            (-1)^r \binom{n}{r} \binom{n + (S-2r) - 1}{S - 2r}.
+    $$
 
      A direct combinatorial argument shows this equals $\binom{n}{S}$.
 
 3. **Ternary Bound ($U=2$)**: Each $x_i \in \{0,1,2\}$. Then
 
-     $$
-         F(n,S;2)
-         =
-         \sum_{r=0}^{\lfloor S/3\rfloor}
-             (-1)^r \binom{n}{r} \binom{n + (S - 3r) - 1}{S - 3r}.
-     $$
+    $$
+        F(n,S;2)
+        =
+        \sum_{r=0}^{\lfloor S/3\rfloor}
+            (-1)^r \binom{n}{r} \binom{n + (S - 3r) - 1}{S - 3r}.
+    $$
 
      This was exactly the core subproblem when counting "7/8/9 slices summing to $K$."
 
