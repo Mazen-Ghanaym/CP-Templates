@@ -27,7 +27,7 @@ $$
 If there were **no upper bound** on each $x_i$ (only $x_i \ge 0$), then the number of solutions to
 
 $$
-  x_1 + \cdots + x_n \;=\; S, 
+  x_1 + \cdots + x_n \;=\; S,
   \quad x_i \ge 0
 $$
 
@@ -71,7 +71,7 @@ $$
   \bigl|\;A_{i_1}\cap \cdots \cap A_{i_r}\bigr|
   \;=\;
   G\bigl(n,\;S - r(U+1)\bigr)
-  \;=\; 
+  \;=\;
   \binom{\,n + \bigl(S - r(U+1)\bigr) - 1\,}{\,S - r(U+1)\,},
 $$
 
@@ -109,7 +109,7 @@ $$
    $$
      F(n,S;1)
      \;=\;
-     \sum_{r=0}^{\lfloor S/2\rfloor} 
+     \sum_{r=0}^{\lfloor S/2\rfloor}
        (-1)^r \binom{n}{r} \binom{\,n + (S-2r) - 1\,}{\,S - 2r\,}.
    $$
 
@@ -120,7 +120,7 @@ $$
    $$
      F(n,S;2)
      \;=\;
-     \sum_{r=0}^{\lfloor S/3\rfloor} 
+     \sum_{r=0}^{\lfloor S/3\rfloor}
        (-1)^r \binom{n}{r} \binom{\,n + (S - 3r) - 1\,}{\,S - 3r\,}.
    $$
 
@@ -242,8 +242,9 @@ int main() {
   $$
     F(n,S;U)
     \;=\;
-    \sum_{r=0}^{\lfloor S/(U+1)\rfloor} (-1)^r 
+    \sum_{r=0}^{\lfloor S/(U+1)\rfloor} (-1)^r
     \binom{n}{r}
     \binom{\,n + (S - r(U+1)) - 1\,}{\,S - r(U+1)\,}.
   $$
+
 * Precompute factorials and inverse factorials modulo $10^9+7$ to answer each binomial in $O(1)$.
