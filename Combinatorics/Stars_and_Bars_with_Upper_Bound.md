@@ -100,29 +100,20 @@ $$
 
 1. **Unrestricted ($U=\infty$)**: Then $(U+1) > S$, so only $r=0$ survives. We recover
 
-    $$
-        F(n,S;\infty) = \binom{n+S-1}{S}.
-    $$
+    $$F(n,S;\infty) = \binom{n+S-1}{S}.$$
 
 2. **Binary Variables ($U=1$)**: Each $x_i \in \{0,1\}$. We get
 
-    $$
-        F(n,S;1)
-        =
-        \sum_{r=0}^{\lfloor S/2\rfloor}
-            (-1)^r \binom{n}{r} \binom{n + (S-2r) - 1}{S - 2r}.
-    $$
+    $$F(n,S;1)=\sum_{r=0}^{\lfloor S/2\rfloor}(-1)^r \binom{n}{r} \binom{n + (S-2r) - 1}{S - 2r}.$$
 
      A direct combinatorial argument shows this equals $\binom{n}{S}$.
 
 3. **Ternary Bound ($U=2$)**: Each $x_i \in \{0,1,2\}$. Then
 
-    $$
-        F(n,S;2)
+    $$F(n,S;2)
         =
         \sum_{r=0}^{\lfloor S/3\rfloor}
-            (-1)^r \binom{n}{r} \binom{n + (S - 3r) - 1}{S - 3r}.
-    $$
+            (-1)^r \binom{n}{r} \binom{n + (S - 3r) - 1}{S - 3r}.$$
 
      This was exactly the core subproblem when counting "7/8/9 slices summing to $K$."
 
@@ -135,16 +126,12 @@ When $n$ and $S$ can be as large as $10^5$, we:
 1. Precompute factorials $\text{fact}[i] = i! \bmod M$ for $i=0\ldots N_{\max}$,
 2. Precompute inverse-factorials $\text{invFact}[i] = (i!)^{-1} \bmod M$ via
 
-   $$
-     (i!)^{-1} = (i!)^{M-2} \bmod M, \quad M=10^9+7,
-   $$
+   $$(i!)^{-1} = (i!)^{M-2} \bmod M, \quad M=10^9+7,$$
 
    using fast exponentiation.
 3. Then
 
-   $$
-     \binom{n}{r} = \text{fact}[n] \times \text{invFact}[r] \times \text{invFact}[n-r] \bmod M,
-   $$
+   $$\binom{n}{r} = \text{fact}[n] \times \text{invFact}[r] \times \text{invFact}[n-r] \bmod M,$$
 
    in $O(1)$ time per query.
 
