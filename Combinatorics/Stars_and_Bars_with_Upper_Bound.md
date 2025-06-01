@@ -214,9 +214,9 @@ int main() {
 * **`nCr(n,r)`** returns $\binom{n}{r} \bmod 10^9+7$.
 * **`countBounded(n,S,U)`** implements
 
-  $$
+$$
     \sum_{r=0}^{\lfloor S/(U+1)\rfloor} (-1)^r \binom{n}{r}\binom{n + (S - r(U+1)) -1}{S - r(U+1)}.
-  $$
+$$
 
 ---
 
@@ -226,13 +226,13 @@ int main() {
 * To enforce $x_i \le U$, use **inclusion–exclusion**, subtracting solutions where any $x_i \ge U+1$.
 * The final formula is
 
-  $$
+$$
     F(n,S;U)
     =
     \sum_{r=0}^{\lfloor S/(U+1)\rfloor} (-1)^r
     \binom{n}{r}
     \binom{n + (S - r(U+1)) - 1}{S - r(U+1)}.
-  $$
+$$
 
 * Precompute factorials and inverse factorials modulo $10^9+7$ to answer each binomial in $O(1)$.
 
