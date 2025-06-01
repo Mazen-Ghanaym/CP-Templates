@@ -111,7 +111,3 @@ This repository contains a comprehensive collection of algorithms and data struc
 - [Bit Operations](Bits.cpp)
 - [Bit Operations Documentation](Bits.md)
 - [Miscellaneous Utilities](Misc.cpp)
-
-## Contributing
-
-Feel free to contribute by submitting pull requests with improvements to existing implementations or new algorithms.
