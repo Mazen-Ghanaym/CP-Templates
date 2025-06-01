@@ -31,7 +31,7 @@ $$
     \quad x_i \ge 0
 $$
 
-is given by the stars‐and‐bars formula:
+is given by the stars-and-bars formula:
 
 $$
     G(n,S)
@@ -42,18 +42,18 @@ $$
 
 ## 2. Imposing $x_i \le U$ via Inclusion–Exclusion
 
-We want to exclude any solution in which some $x_i > U$.  Define
+We want to exclude any solution in which some $x_i > U$. Define
 
 $$
-    A_i =\bigl\{\text{solutions with }x_i \ge U+1\bigr\}.
+    A_i = \{x : x_i \ge U+1\}.
 $$
 
 By inclusion–exclusion,
 
 $$
     F(n,S;U)
-    = \bigl|\{\sum x_i = S,x_i \ge 0\}\bigr|
-    - \bigl|A_1 \cup \cdots \cup A_n\bigr|.
+    = |\{x : \sum x_i = S, x_i \ge 0\}|
+    - |A_1 \cup \cdots \cup A_n|.
 $$
 
 In expanded form:
@@ -62,20 +62,20 @@ $$
     F(n,S;U)
     =
     \sum_{r=0}^{n} (-1)^r \sum_{1 \le i_1 < \cdots < i_r \le n}
-    \Bigl|A_{i_1}\cap \cdots \cap A_{i_r}\Bigr|.
+    |A_{i_1}\cap \cdots \cap A_{i_r}|.
 $$
 
-If $r$ specific indices are forced to satisfy $x_{i_k} \ge U+1$, shift each of those by $(U+1)$.  The total sum then becomes $S - r(U+1)$, distributed freely among all $n$ variables:
+If $r$ specific indices are forced to satisfy $x_{i_k} \ge U+1$, shift each of those by $(U+1)$. The total sum then becomes $S - r(U+1)$, distributed freely among all $n$ variables:
 
 $$
-    \bigl|A_{i_1}\cap \cdots \cap A_{i_r}\bigr|
+    |A_{i_1}\cap \cdots \cap A_{i_r}|
     =
-    G\bigl(n,S - r(U+1)\bigr)
+    G(n, S - r(U+1))
     =
-    \binom{n + \bigl(S - r(U+1)\bigr) - 1}{S - r(U+1)},
+    \binom{n + (S - r(U+1)) - 1}{S - r(U+1)},
 $$
 
-provided $S - r(U+1)\ge0$.  Summing over all choices of $r$ variables ($\binom{n}{r}$ ways) yields the final closed‐form.
+provided $S - r(U+1) \ge 0$. Summing over all choices of $r$ variables ($\binom{n}{r}$ ways) yields the final closed-form.
 
 ---
 
@@ -87,7 +87,7 @@ $$
         =
         \sum_{r = 0}^{\lfloor S/(U+1)\rfloor}
         (-1)^r \binom{n}{r}
-        \binom{n + \bigl(S - r(U+1)\bigr) - 1}{S - r(U+1)}.
+        \binom{n + (S - r(U+1)) - 1}{S - r(U+1)}.
     }
 $$
 
@@ -98,13 +98,13 @@ $$
 
 ## 4. Special Cases
 
-1. **Unrestricted ($U=\infty$)**: Then $(U+1) > S$, so only $r=0$ survives.  We recover
+1. **Unrestricted ($U=\infty$)**: Then $(U+1) > S$, so only $r=0$ survives. We recover
 
      $$
          F(n,S;\infty) = \binom{n+S-1}{S}.
      $$
 
-2. **Binary Variables ($U=1$)**: Each $x_i \in \{0,1\}$.  We get
+2. **Binary Variables ($U=1$)**: Each $x_i \in \{0,1\}$. We get
 
      $$
          F(n,S;1)
@@ -115,7 +115,7 @@ $$
 
      A direct combinatorial argument shows this equals $\binom{n}{S}$.
 
-3. **Ternary Bound ($U=2$)**: Each $x_i \in \{0,1,2\}$.  Then
+3. **Ternary Bound ($U=2$)**: Each $x_i \in \{0,1,2\}$. Then
 
      $$
          F(n,S;2)
@@ -132,18 +132,18 @@ $$
 
 When $n$ and $S$ can be as large as $10^5$, we:
 
-1. Precompute factorials $\text{fact}[i] = i!\bmod M$ for $i=0\ldots N_{\max}$,
-2. Precompute inverse‐factorials $\text{invFact}[i] = (i!)^{-1} \bmod M$ via
+1. Precompute factorials $\text{fact}[i] = i! \bmod M$ for $i=0\ldots N_{\max}$,
+2. Precompute inverse-factorials $\text{invFact}[i] = (i!)^{-1} \bmod M$ via
 
    $$
-     (i!)^{-1} \;=\; (i!)^{\,M-2} \bmod M,\quad M=10^9+7,
+     (i!)^{-1} = (i!)^{M-2} \bmod M, \quad M=10^9+7,
    $$
 
    using fast exponentiation.
 3. Then
 
    $$
-     \binom{n}{r} \;=\; \text{fact}[n]\times \text{invFact}[r]\times \text{invFact}[\,n-r\,] \bmod M,
+     \binom{n}{r} = \text{fact}[n] \times \text{invFact}[r] \times \text{invFact}[n-r] \bmod M,
    $$
 
    in $O(1)$ time per query.
@@ -224,27 +224,28 @@ int main() {
 ```
 
 * **`initFactorials()`** populates `fact[i]` and `invFact[i]` up to `MAXN`.
-* **`nCr(n,r)`** returns $\binom{n}{r} \bmod\,10^9+7$.
+* **`nCr(n,r)`** returns $\binom{n}{r} \bmod 10^9+7$.
 * **`countBounded(n,S,U)`** implements
 
   $$
-    \sum_{r=0}^{\lfloor S/(U+1)\rfloor} (-1)^r \binom{n}{r}\,\binom{\,n + (S - r(U+1)) -1\,}{\,S - r(U+1)\,}.
+    \sum_{r=0}^{\lfloor S/(U+1)\rfloor} (-1)^r \binom{n}{r}\binom{n + (S - r(U+1)) -1}{S - r(U+1)}.
   $$
 
 ---
 
 ## 6. Key Takeaways
 
-* **Stars & Bars** handles $\;x_i\ge0$ with $\sum x_i = S$ → $\binom{n+S-1}{S}$.
+* **Stars & Bars** handles $x_i \ge 0$ with $\sum x_i = S$ → $\binom{n+S-1}{S}$.
 * To enforce $x_i \le U$, use **inclusion–exclusion**, subtracting solutions where any $x_i \ge U+1$.
 * The final formula is
 
   $$
     F(n,S;U)
-    \;=\;
+    =
     \sum_{r=0}^{\lfloor S/(U+1)\rfloor} (-1)^r
     \binom{n}{r}
-    \binom{\,n + (S - r(U+1)) - 1\,}{\,S - r(U+1)\,}.
+    \binom{n + (S - r(U+1)) - 1}{S - r(U+1)}.
   $$
 
 * Precompute factorials and inverse factorials modulo $10^9+7$ to answer each binomial in $O(1)$.
+
