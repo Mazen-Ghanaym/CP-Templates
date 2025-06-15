@@ -94,7 +94,7 @@ vector<int> multiply(const vector<int> &a, const vector<int> &b)
         fft(fa, true);
         vector<int> result(min(n, limit));
         for (int i = 0; i < min(n, limit); i++)
-            result[i] = round(fa[i].real()) % limit;
+            result[i] = round(fa[i].real());
         return result;
     }
 */
