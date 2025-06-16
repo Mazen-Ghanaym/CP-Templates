@@ -71,7 +71,7 @@ vector<int> multiply(const vector<int> &a, const vector<int> &b)
     fft(fa, true);
     vector<int> result(n);
     for (int i = 0; i < n; i++)
-        result[i] = round(fa[i].real());
+        result[i] = llround(fa[i].real());
 
     return result;
 }
