@@ -2,94 +2,103 @@
 
 This repository contains a comprehensive collection of algorithms and data structures commonly used in competitive programming. All implementations are in C++.
 
-## Data Structures
+## 📁 Repository Structure
 
-### Segment Trees and Range Queries
+### 🔢 Range Query
 
-- [Basic Segment Tree](Segment_Tree.cpp)
-- [2D Segment Tree](2D_Segment_Tree.cpp)
-- [Dynamic Segment Tree](Dynamic_Segment_Tree.cpp)
-- [Lazy Propagation](Lazy_Propagation_01.cpp)
-- [Lazy Segment Tree](Lazy_Segment_Tree.cpp)
-- [Persistent Segment Tree](Persistent_Segment_Tree.cpp)
-- [Persistent Lazy Static](Persistent_lazy_static.cpp)
-- [Hashing Segment Tree](Hashing_Segment_Tree.cpp)
+Segment Trees, Fenwick Trees, and other range query data structures
 
-### Fenwick Trees (Binary Indexed Trees)
+- [Basic Segment Tree](Range_Query/Segment_Tree.cpp)
+- [2D Segment Tree](Range_Query/2D_Segment_Tree.cpp)
+- [Dynamic Segment Tree](Range_Query/Dynamic_Segment_Tree.cpp)
+- [Lazy Propagation](Range_Query/Lazy_Propagation_01.cpp)
+- [Lazy Segment Tree](Range_Query/Lazy_Segment_Tree.cpp)
+- [Persistent Segment Tree](Range_Query/Persistent_Segment_Tree.cpp)
+- [Persistent Lazy Static](Range_Query/Persistent_lazy_static.cpp)
+- [Hashing Segment Tree](Range_Query/Hashing_Segment_Tree.cpp)
+- [Basic Fenwick Tree](Range_Query/Fenwick_Tree.cpp)
+- [2D Fenwick Tree](Range_Query/Fenwick_Tree_2D.cpp)
+- [Range Update Range Query Fenwick Tree](Range_Query/Fenwick_Tree_RURQ.cpp)
+- [Basic BIT Implementation](Range_Query/BIT.cpp)
+- [SQRT Decomposition](Range_Query/SQRT_Decomposition.cpp)
+- [Sparse Table](Range_Query/Sparse_Table.cpp)
 
-- [Basic Fenwick Tree](Fenwick_Tree.cpp)
-- [2D Fenwick Tree](Fenwick_Tree_2D.cpp)
-- [Range Update Range Query Fenwick Tree](Fenwick_Tree_RURQ.cpp)
-- [Basic BIT Implementation](BIT.cpp)
+### 🌳 Tree Algorithms
 
-### Trees and Tree Algorithms
+Tree-specific algorithms and operations
 
-- [DFS](DFS.cpp)
-- [Lowest Common Ancestor](LCA_1.cpp)
-- [Heavy-Light Decomposition with Maximum Subarray](HLD_Maximum_Subarray.cpp)
-- [K-th Ancestor using Binary Lifting](K_th_Ancestor_Binary_lifting.cpp)
-- [Centroid Decomposition](Centroid_Decomposition.cpp)
-- [Tree Diameter](Tree_Diameter.cpp)
-- [Tree Isomorphism](Tree_Isomorphism.cpp)
-- [Euler Tour](Euler_Tour.cpp)
+- [DFS](Tree_Algorithms/DFS.cpp)
+- [Lowest Common Ancestor](Tree_Algorithms/LCA_1.cpp)
+- [Heavy-Light Decomposition with Maximum Subarray](Tree_Algorithms/HLD_Maximum_Subarray.cpp)
+- [K-th Ancestor using Binary Lifting](Tree_Algorithms/K_th_Ancestor_Binary_lifting.cpp)
+- [Centroid Decomposition](Tree_Algorithms/Centroid_Decomposition.cpp)
+- [Tree Diameter](Tree_Algorithms/Tree_Diameter.cpp)
+- [Tree Isomorphism](Tree_Algorithms/Tree_Isomorphism.cpp)
+- [Euler Tour](Tree_Algorithms/Euler_Tour.cpp)
 
-### Disjoint Set Union (DSU)
+### 🔗 Data Structures
 
-- [Basic DSU](DSU.cpp)
-- [DSU with Rollbacks](DSU_With_Rollbacks.cpp)
+General data structures and their implementations
 
-### Other Data Structures
+- [Binary Trie](Data_Structures/Binary_Trie.cpp)
+- [Treap](Data_Structures/Treap.cpp)
+- [Enhanced Treap](Data_Structures/Treap++.cpp)
+- [Basic DSU](Data_Structures/DSU.cpp)
+- [DSU with Rollbacks](Data_Structures/DSU_With_Rollbacks.cpp)
+- [Monotonic Queue](Data_Structures/Monotonic_Queue.cpp)
+- [Mex Class](Data_Structures/Mex_Class.cpp)
 
-- [Binary Trie](Binary_Trie.cpp)
-- [Treap](Treap.cpp)
-- [Enhanced Treap](Treap++.cpp)
-- [Monotonic Queue](Monotonic_Queue.cpp)
-- [SQRT Decomposition](SQRT_Decomposition.cpp)
-- [Sparse Table](Sparse_Table.cpp)
+### 🔤 String Algorithms
 
-## Algorithms
+String processing and pattern matching algorithms
 
-### String Algorithms
+- [KMP (Knuth-Morris-Pratt)](String_Algorithms/KMP.cpp)
+- [Alternative KMP Implementation](String_Algorithms/KMP2.cpp)
+- [Z Algorithm](String_Algorithms/Z_Algorithm.cpp)
+- [Suffix Array](String_Algorithms/Suffix_Array.cpp)
+- [Integer-based Suffix Array](String_Algorithms/Suffix_Array_Int.cpp)
+- [Aho-Corasick](String_Algorithms/Aho_Corasick.cpp)
+- [Booth's Algorithm](String_Algorithms/Booth's%20Algorithm.cpp)
+- [Manacher's Algorithm](String_Algorithms/Manachers.cpp)
+- [Prefix Hashing](String_Algorithms/Hashing_Prefix.cpp)
+- [Hashing Implementation 1](String_Algorithms/Hashing1.cpp)
+- [Hashing Implementation 2](String_Algorithms/Hashing2.cpp)
 
-- [KMP (Knuth-Morris-Pratt)](KMP.cpp)
-- [Alternative KMP Implementation](KMP2.cpp)
-- [Z Algorithm](Z_Algorithm.cpp)
-- [Suffix Array](Suffix_Array.cpp)
-- [Integer-based Suffix Array](Suffix_Array_Int.cpp)
-- [Aho-Corasick](Aho_Corasick.cpp)
-- [Booth's Algorithm](Booth's%20Algorithm.cpp)
-- [Manacher's Algorithm](Manachers.cpp)
+### 📊 Graph Algorithms
 
-### Graph Algorithms
+Graph theory algorithms and connectivity
 
-- [Tarjan's Algorithm](Tarjan.cpp)
-- [Bellman-Ford](Bellman_Ford.cpp)
-- [Online Bridge Detection](Online_Bridges.cpp)
+- [Tarjan's Algorithm](Graph_Algorithms/Tarjan.cpp)
+- [Bellman-Ford](Graph_Algorithms/Bellman_Ford.cpp)
+- [Online Bridge Detection](Graph_Algorithms/Online_Bridges.cpp)
 
-### Query Processing
+### 🔍 Query Algorithms
 
-- [MO's Algorithm](MO's_algo.cpp)
-- [MO's Algorithm on Tree Edges](MO_on_tree_edges.cpp)
-- [MO's Algorithm on Tree Values](MO_on_Tree_val_on_nodes.cpp)
+Query processing and optimization techniques
 
-### String Hashing
+- [MO's Algorithm](Query_Algorithms/MO's_algo.cpp)
+- [MO's Algorithm on Tree Edges](Query_Algorithms/MO_on_tree_edges.cpp)
+- [MO's Algorithm on Tree Values](Query_Algorithms/MO_on_Tree_val_on_nodes.cpp)
 
-- [Prefix Hashing](Hashing_Prefix.cpp)
-- [Hashing Implementation 1](Hashing1.cpp)
-- [Hashing Implementation 2](Hashing2.cpp)
+### 🧮 Combinatorics
 
-### Combinatorics
+Combinatorial mathematics and counting
 
 - [Various Combinatorics Algorithms](Combinatorics/Combinatorics.cpp)
 - [Documentation](Combinatorics/Combinatorics.md)
+- [Stars and Bars with Upper Bound](Combinatorics/Stars_and_Bars_with_Upper_Bound.md)
 
-### Geometry
+### 📐 Geometry
+
+Computational geometry algorithms and utilities
 
 - [Basic Geometry](Geometry/Geometry.cpp)
 - [Convex Hull](Geometry/ConvexHull.cpp)
 - [Documentation](Geometry/Geometry.md)
 
-### Number Theory
+### 🔢 Number Theory
+
+Number theory algorithms and mathematical functions
 
 - [Basic Number Theory](Number_Theory/Number_Theory.cpp)
 - [Chinese Remainder Theorem (CRT)](Number_Theory/Chinese_Remainder_Theorem_CRT.cpp)
@@ -103,11 +112,25 @@ This repository contains a comprehensive collection of algorithms and data struc
 - [Precomputed Values](Number_Theory/Precompute.cpp)
 - [Documentation](Number_Theory/Knowledge.md)
 
-### Miscellaneous
+### 🧮 Math
 
-- [Matrix Power](Matrix_Power.cpp)
-- [Mex Class](Mex_Class.cpp)
-- [Subset Sum Optimizations](Subset_Sum_Optimizations.cpp)
-- [Bit Operations](Bits.cpp)
-- [Bit Operations Documentation](Bits.md)
-- [Miscellaneous Utilities](Misc.cpp)
+Advanced mathematical algorithms and transformations
+
+- [Fast Fourier Transform (FFT)](Math/FFT.cpp)
+- [Number Theoretic Transform (NTT)](Math/NTT.cpp)
+- [FFT Applications](Math/FFT_Apps.md)
+
+### 🔧 Bit Operations
+
+Bit manipulation techniques and optimizations
+
+- [Bit Operations](Bit_Operations/Bits.cpp)
+- [Bit Operations Documentation](Bit_Operations/Bits.md)
+
+### 🛠️ Miscellaneous
+
+Various utility algorithms and optimizations
+
+- [Matrix Power](Miscellaneous/Matrix_Power.cpp)
+- [Subset Sum Optimizations](Miscellaneous/Subset_Sum_Optimizations.cpp)
+- [Miscellaneous Utilities](Miscellaneous/Misc.cpp)
