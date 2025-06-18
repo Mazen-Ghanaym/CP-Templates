@@ -181,3 +181,31 @@ Some ideas to use the index as the exponent in the polynomial and the element as
    then we will compute the product of the two polynomials using FFT one has $i$ the pattern has $-i + SHIFT$ and accumulate the answers in a global vector for all characteres from 'a' to 'z'.
    `ans[i + SHIFT]` is the number of matched characters at index $i$
    </details>
+
+## Multiplication with arbitrary modulus
+
+Here we want to achieve the same goal as in previous section.
+Multiplying two polynomial $A(x)$ and $B(x)$, and computing the coefficients modulo some number $M$.
+The number theoretic transform only works for certain prime numbers.
+What about the case when the modulus is not of the desired form?
+
+One option would be to perform multiple number theoretic transforms with different prime numbers of the form $c 2^k + 1$, then apply the [Chinese Remainder Theorem](chinese-remainder-theorem.md) to compute the final coefficients.
+
+Another options is to distribute the polynomials $A(x)$ and $B(x)$ into two smaller polynomials each
+
+$$\begin{align}
+A(x) &= A_1(x) + A_2(x) \cdot C \\
+B(x) &= B_1(x) + B_2(x) \cdot C
+\end{align}$$
+
+with $C \approx \sqrt{M}$.
+
+Then the product of $A(x)$ and $B(x)$ can then be represented as:
+
+$$A(x) \cdot B(x) = A_1(x) \cdot B_1(x) + \left(A_1(x) \cdot B_2(x) + A_2(x) \cdot B_1(x)\right)\cdot C + \left(A_2(x) \cdot B_2(x)\right)\cdot C^2$$
+
+The polynomials $A_1(x)$, $A_2(x)$, $B_1(x)$ and $B_2(x)$ contain only coefficients smaller than $\sqrt{M}$, therefore the coefficients of all the appearing products are smaller than $M \cdot n$, which is usually small enough to handle with typical floating point types.
+
+This approach therefore requires computing the products of polynomials with smaller coefficients (by using the normal FFT and inverse FFT), and then the original product can be restored using modular addition and multiplication in $O(n)$ time.
+
+
