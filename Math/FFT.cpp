@@ -19,7 +19,7 @@ using namespace std;
 // FFT
 // Fast Fourier Transform for polynomial multiplication without mod
 // O(n log n) complexity
-
+// if wrong try use precompute_w with fft function from FFT_With_MOD.cpp
 #define complex complex<long double>
 void fft(vector<complex> &a, bool invert)
 {
