@@ -20,7 +20,7 @@ using namespace std;
 // Fast Fourier Transform for polynomial multiplication without mod
 // O(n log n) complexity
 
-#define complex complex<double>
+#define complex complex<long double>
 void fft(vector<complex> &a, bool invert)
 {
     int n = a.size();
