@@ -90,7 +90,23 @@ struct NTT
         for (int i = 0; i < n; i++)
             fa[i] = (int)(fa[i] * fb[i] % MOD);
         ntt(fa, true);
+        fa.resize(sz(a) + sz(b) - 1);
         return fa;
+    }
+
+    static vector<int> poly_pow_mod(const vector<int> &a, int exp) {
+        int n = a.size();
+        vector<int> result(n, 0);
+        result[0] = 1; 
+        vector<int> base = a;
+        while (exp > 0) {
+            if (exp % 2 == 1) {
+                result = multiply(result, base);
+            }
+            base = multiply(base, base);
+            exp /= 2;
+        }
+        return result;
     }
 };  
 
