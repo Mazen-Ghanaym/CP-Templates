@@ -175,7 +175,7 @@ In such cases, you’ll need multi-modulus + CRT or float FFT.
 | Modulus         | 998244353 (or similar) |
 | Time            | $O(n \log n)$          |
 | Space           | $O(n)$                 |
-| Uses CRT?       | ❌ No                   |
-| Works with FFT? | ❌ No                   |
+| Uses CRT?       |  No                   |
+| Works with FFT? |  No                   |
 
 ---
