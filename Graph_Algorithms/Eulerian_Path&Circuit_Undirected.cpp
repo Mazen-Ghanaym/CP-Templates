@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Undirected Eulerian Circuit/ Path
+// Undirected Eulerian Circuit/ Path (Hierholzer's Algorithm)
 // If the graph is connected and all vertices have even degree, then it has an Eulerian
 // circuit. If exactly two vertices have odd degree, then it has an Eulerian path.
 // If all vertices have even degree, then the path starts and ends at the same vertex.

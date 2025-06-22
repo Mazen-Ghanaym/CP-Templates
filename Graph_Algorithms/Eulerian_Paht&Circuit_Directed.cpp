@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Directed Eulerian Circuit/ Path
+// Directed Eulerian Circuit/ Path (Hierholzer's Algorithm)
 // If the graph is strongly connected and all vertices have equal in-degree and out-degree, then
 // it has an Eulerian circuit. If exactly two vertices have odd degree
 // one has out = in + 1 (start node) and the another has in = out + 1 (end node), then it has
