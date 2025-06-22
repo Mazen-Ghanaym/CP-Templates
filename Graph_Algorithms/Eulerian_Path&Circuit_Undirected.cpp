@@ -47,7 +47,7 @@ void Eulerian_Circuit() {
 	for (int node = 0; node < n; node++) {
 		if (degree[node] % 2) {
 			cout << "IMPOSSIBLE" << endl;
-			return 0;
+			return;
 		}
 	}
 
@@ -85,7 +85,7 @@ void Eulerian_Path() {
 	}
 	if (odd != 0 && odd != 2) {
 		cout << "IMPOSSIBLE" << endl;
-		return 0;
+		return;
 	}
 	int start = 0;
 	if (odd == 2) {

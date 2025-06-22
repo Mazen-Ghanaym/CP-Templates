@@ -44,13 +44,13 @@ void Eulerian_Path() {
 	}
 	if (out[1] != in[1] + 1 || out[n] != in[n] - 1 || !flag) {
 		cout << "IMPOSSIBLE";
-		return 0;
+		return;
 	}
 
 	dfs(1);
 
 	reverse(path.begin(), path.end());
-	if (path.size() != m + 1 || path.back() != n) {
+	if ((int)path.size() != m + 1 || path.back() != n) {
 		cout << "IMPOSSIBLE";
 	} else {
 		for (auto node : path) { cout << node << ' '; }
@@ -79,13 +79,13 @@ void Eulerian_Circuit() {
     }
     if (!flag) {
         cout << "IMPOSSIBLE";
-        return 0;
+        return;
     }
 
     dfs(1);
 
     reverse(path.begin(), path.end());
-    if (path.size() != m + 1 || path.back() != 1) {
+    if ((int)path.size() != m + 1 || path.back() != 1) {
         cout << "IMPOSSIBLE";
     } else {
         for (auto node : path) { cout << node << ' '; }
