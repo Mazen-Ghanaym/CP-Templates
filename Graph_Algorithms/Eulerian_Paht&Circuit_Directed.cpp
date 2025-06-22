@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
+#define sz(x) ((int)(x).size())
 // Directed Eulerian Circuit/ Path (Hierholzer's Algorithm)
 // If the graph is strongly connected and all vertices have equal in-degree and out-degree, then
 // it has an Eulerian circuit. If exactly two vertices have odd degree
@@ -8,96 +8,89 @@ using namespace std;
 // an Eulerian path. If all vertices have equal in-degree and out-degree, then the path starts
 // and ends at the same vertex. If exactly two vertices have odd degree, then the path
 // starts at one of them and ends at the other.
+// Generalized Directed Eulerian Path or Circuit
+// Can have self-loops and multiple edges.
+// Not all n nodes need to be presented in the path
+// only the nodes presented in the m edges are considered.
+// check their connectivity and find the path for them.
 
-	int n, m;
-vector<vector<int>> g;
-vector<int> in, out, path;
+int n, m;
+vector<vector<pair<int, int>>> adj;
+vector<int> deg;
 
-void dfs(int node) {
-	while (!g[node].empty()) {
-		int son = g[node].back();
-		g[node].pop_back();
-		dfs(son);
-	}
-	path.push_back(node);
+// deg[u] = out[u] - in[u]
+bool Eulerian_Path_or_Circuit() {
+    int st = -1, en = -1, cycle_start = 1;
+    for(int u = 1; u <= n; ++u) {
+        if(abs(deg[u]) > 1) return false;
+        if(!adj[u].empty()) cycle_start = u;
+
+        if(deg[u] == 1) {
+            if(~st) return false;
+            st = u;
+        }
+
+        if(deg[u] == -1) {
+            if(~en) return false;
+            en = u;
+        }
+    }
+
+    if(st == -1) st = cycle_start;
+    vector<int> edges, nodes, vis(m);
+    auto dfs = [&](auto &&dfs, int u) -> void {
+        while(!adj[u].empty()) {
+            auto [v, i] = adj[u].back();
+            adj[u].pop_back();
+            if(vis[i]) continue;
+            vis[i] = 1, dfs(dfs, v);
+            edges.push_back(i);
+            nodes.push_back(v);
+        }
+    };
+
+    dfs(dfs, st);
+    if(sz(edges) != m) return false;
+    nodes.push_back(st);
+    reverse(nodes.begin(), nodes.end());
+    reverse(edges.begin(), edges.end());
+    
+    cout << "Yes\n";
+    for(auto &i: nodes) cout << --i << ' ';
+    cout << endl;
+    for(auto &i: edges) cout << i << ' ';
+    cout << endl;
+    
+    return true;
 }
 
-void Eulerian_Path() {
-    // find eulerian path from 1 to n
-	cin >> n >> m;
-
-	g.resize(n + 1);
-	in.resize(n + 1);
-	out.resize(n + 1);
-
-	for (int i = 0; i < m; i++) {
-		int x, y;
-		cin >> x >> y;
-		g[x].push_back(y);
-		out[x]++;
-		in[y]++;
-	}
-
-	bool flag = true;
-	for (int node = 2; node < n && flag; node++) {
-		if (in[node] != out[node]) { flag = false; }
-	}
-	if (out[1] != in[1] + 1 || out[n] != in[n] - 1 || !flag) {
-		cout << "IMPOSSIBLE";
-		return;
-	}
-
-	dfs(1);
-
-	reverse(path.begin(), path.end());
-	if ((int)path.size() != m + 1 || path.back() != n) {
-		cout << "IMPOSSIBLE";
-	} else {
-		for (auto node : path) { cout << node << ' '; }
-	}
-}
 // ==============================================================================
-void Eulerian_Circuit() {
-    // find eulerian circuit
+
+void solve(){
     cin >> n >> m;
-
-    g.resize(n + 1);
-    in.resize(n + 1);
-    out.resize(n + 1);
-
-    for (int i = 0; i < m; i++) {
-        int x, y;
-        cin >> x >> y;
-        g[x].push_back(y);
-        out[x]++;
-        in[y]++;
+    adj.assign(n + 1, vector<pair<int, int>>());
+    deg.assign(n + 1, 0);
+    
+    for(int i = 0; i < m; ++i) {
+        int u, v;
+        cin >> u >> v;
+        u++, v++;
+        adj[u].emplace_back(v, i);
+        deg[u]++, deg[v]--;
     }
-
-    bool flag = true;
-    for (int node = 1; node <= n && flag; node++) {
-        if (in[node] != out[node]) { flag = false; }
-    }
-    if (!flag) {
-        cout << "IMPOSSIBLE";
-        return;
-    }
-
-    dfs(1);
-
-    reverse(path.begin(), path.end());
-    if ((int)path.size() != m + 1 || path.back() != 1) {
-        cout << "IMPOSSIBLE";
-    } else {
-        for (auto node : path) { cout << node << ' '; }
+    
+    if(!Eulerian_Path_or_Circuit()) {
+        cout << "No\n";
     }
 }
-// ==============================================================================
-int main() {
+int main()
+{
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    // Uncomment one of the following lines to choose between Circuit and Path
-    // Eulerian_Circuit();
-    Eulerian_Path();
+    int t;
+    cin >> t;
+    while (t--)
+        solve();
     return 0;
 }
