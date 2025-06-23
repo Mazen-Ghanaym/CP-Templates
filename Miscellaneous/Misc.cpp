@@ -24,6 +24,7 @@ mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
 inline int random(int l, int r)
 {
     return rnd() % (r - l + 1) + l;
+    // return uniform_int_distribution<int>(l, r)(rnd);
 }
 
 // another way to generate random
