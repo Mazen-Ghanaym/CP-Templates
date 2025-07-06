@@ -208,7 +208,7 @@ struct SuffixArray
     // longest common substring of the string and the pattern
     inline string longest_common_substring(const string &s, const string &t)
     {
-        string st = s + "#" + t + "$";
+        string st = s + "#" + t + "$";  // if wrong st = s + "\" + t
         SuffixArray sa(st);
         int n = sz(s), ans = 0, idx = 0;
         for (int i = 1; i < sz(st); i++)
