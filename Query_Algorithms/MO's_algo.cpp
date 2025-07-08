@@ -51,13 +51,6 @@ void procces(){
         ans[query[i].q_idx] = res;
     }
 }
-void fastio()
-{
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-#endif
-}
 void solve(int tc){
     cin >> n >> q;
     for (int i = 0; i < n; i++)
