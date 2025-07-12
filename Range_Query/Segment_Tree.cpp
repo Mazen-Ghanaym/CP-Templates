@@ -89,6 +89,40 @@ struct SegTree{
         return query(l, r, 1, 1, size).val;
     }
 };
+/*
+    // find k‑th c in [L,R], or –1
+    int kth(int L, int R, char c, int k)
+    {
+        return kth_rec(L, R, c, k, 1, 1, size);
+    }
+
+    int kth_rec(int L, int R, char c, int k,
+                int idx, int lx, int rx)
+    {
+        // no overlap
+        if (lx > R || rx < L)
+            return -1;
+
+        // fully inside [L,R], maybe finish here
+        if (lx >= L && rx <= R)
+        {
+            if (tree[idx].val < k)
+                return -1;
+            if (lx == rx)
+                return lx;
+        }
+
+        int mid = (lx + rx) / 2;
+        // count in left child ∩ [L,R]
+        Node leftNode = query(L, R, 2 * idx, lx, mid);
+        int leftCount = leftNode.val;
+
+        if (leftCount >= k)
+            return kth_rec(L, R, c, k, 2 * idx, lx, mid);
+        else
+            return kth_rec(L, R, c, k - leftCount, 2 * idx + 1, mid + 1, rx);
+    }
+*/
 void solve(int tc)
 {
     int n, q;
