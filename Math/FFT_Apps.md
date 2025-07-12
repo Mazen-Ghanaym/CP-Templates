@@ -78,6 +78,8 @@
    the sub array sum can be represented as difference of two prefix sums, so we can use the same idea as the previous problem.
    we will convert the array to be in form of $F1 = \sum_{pref \in A}freq(pref)x^{pref}$ and $F2 = \sum_{pref \in A}freq(pref)x^{-pref + SHIFT}$, and note that the polynomial multiplication doesn't guarantee that $pref[j] - pref[i]$ and $j >= i$ and this is wrong so we have a condition that $a_i >= 0$ so we will access only the positive indices because it will counted correctly, because all the prefixes are non-negative and the positive indices guarantee that $j >= i$ and $pref[j] - pref[i]$ is non-negative.
    then we will compute $F1 * F2$ using FFT, each coefficient represent the number of pairs $(i, j)$ to form the difference of the corresponding index $-SHIFT$. but the FFT will overcount the subarray sums that have sum = 0, because the sum 0 can be formed from $j > i \mid j < i \mid j = i$ so compute the sumarrays that have sum = 0 manually
+   > [!NOTE]
+   > don't forget to mark the sum of 0 to frequency 1, because the empty subarray is a valid subarray and its sum is 0.
    </details>
 
 7. Generate all subset sum
