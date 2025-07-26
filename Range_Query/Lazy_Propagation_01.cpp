@@ -19,23 +19,16 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio()
-{
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-    #endif
-}
 // lazy propagation range change point query
 // used for problems like 
 // 1 l r x y   change all elements in range from l to r has value x to y
 // 2 idx       query the value at index idx
 struct LazyBinTreeUniversal {
     using T = int;
-    using TMod = std::array<uint8_t, 101>;
+    using TMod = array<uint8_t, 101>;
     size_t size;
-    std::vector<T> t;
-    std::vector<TMod> mod;
+    vector<T> t;
+    vector<TMod> mod;
     size_t h;
  
     LazyBinTreeUniversal(size_t N) :
@@ -44,12 +37,12 @@ struct LazyBinTreeUniversal {
         mod(N, modInit()),
         h(32 - __builtin_clz(N)) { }
  
-    LazyBinTreeUniversal(const std::vector<T>& other) :
+    LazyBinTreeUniversal(const vector<T>& other) :
         size(other.size()),
         t(2 * other.size()),
         mod(other.size(), modInit()),
         h(32 - __builtin_clz(other.size())) {
-        std::copy(other.begin(), other.end(), t.begin() + size);
+        copy(other.begin(), other.end(), t.begin() + size);
     }
  
     void apply(size_t p, const TMod& up_mod) {
@@ -120,7 +113,7 @@ struct LazyBinTreeUniversal {
  
     TMod modInit() {
         TMod result = {};
-        std::iota(result.begin(), result.end(), 0);
+        iota(result.begin(), result.end(), 0);
         return result;
     }
 };
