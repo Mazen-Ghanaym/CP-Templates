@@ -18,15 +18,6 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-ll max(ll n1, ll n2) { return (n1 >= n2) ? n1 : n2; }
-ll min(ll n1, ll n2) { return (n1 >= n2) ? n2 : n1; }
-void fastio()
-{
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-    #endif
-}
 // sparse table
 // O(nlogn) preprocessing
 // O(1) query
@@ -68,6 +59,18 @@ void solve(int tc)
         8 8 
         9
     */
+    // query O(1)
+    auto query = [](int l, int r) {
+        int k = log2(r - l + 1);
+        return min(sparse_table[l][k], sparse_table[r - (1 << k) + 1][k]);
+    };
+    // query O(logn)
+    auto query_log = [](int l, int r) {
+        int res = arr[l];
+        for (int i = l + 1; i <= r; ++i)
+            res = min(res, arr[i]);
+        return res;
+    };
     // query
     int q;
     cin >> q;
@@ -82,7 +85,6 @@ void solve(int tc)
 }
 int main(void)
 {
-    fastio();
     int tc = 1;
     //cin >> tc;
     int i = 1;
