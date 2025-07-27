@@ -26,6 +26,23 @@ using namespace std;
 // sparse table can be used for range sum, range min, range max, range gcd, range lcm, range xor, range and, range or
 // sparse table can be used for range queries on static array
 // sparse table can't be used for update queries
+// zero-based indexing
+// zero-based query
+/*
+sparse table for range min query
+    0 1 2 3 4 5 6 7 8 9
+    
+    0 0 0 0
+    1 1 1 1 
+    2 2 2 2 
+    3 3 3 
+    4 4 4 
+    5 5 5 
+    6 6 6
+    7 7 
+    8 8 
+    9
+*/
 vector<vector<int>> sparse_table;
 vector<int> arr;
 int LOG = 20;
@@ -33,6 +50,8 @@ int n;
 void solve(int tc)
 {
     cin >> n;
+    int q;
+    cin >> q;
     LOG = log2(n) + 1;
     arr.resize(n);
     sparse_table.resize(n, vector<int>(LOG));
@@ -44,21 +63,6 @@ void solve(int tc)
     for (int j = 1; j < LOG; ++j)
         for (int i = 0; i + (1 << j) <= n; ++i)
             sparse_table[i][j] = min(sparse_table[i][j - 1], sparse_table[i + (1 << (j - 1))][j - 1]);
-    /*
-    sparse table for range min query
-        0 1 2 3 4 5 6 7 8 9
-        
-        0 0 0 0
-        1 1 1 1 
-        2 2 2 2 
-        3 3 3 
-        4 4 4 
-        5 5 5 
-        6 6 6
-        7 7 
-        8 8 
-        9
-    */
     // query O(1)
     auto query = [](int l, int r) {
         int k = log2(r - l + 1);
@@ -66,21 +70,23 @@ void solve(int tc)
     };
     // query O(logn)
     auto query_log = [](int l, int r) {
-        int res = arr[l];
-        for (int i = l + 1; i <= r; ++i)
-            res = min(res, arr[i]);
+        int res = oo;
+        for (int j = LOG - 1; j >= 0; --j) {
+            if (l + (1 << j) - 1 <= r) {
+                res = min(res, sparse_table[l][j]);
+                l += (1 << j);
+            }
+        }
         return res;
     };
     // query
-    int q;
-    cin >> q;
     while (q--)
     {
         int l, r;
         cin >> l >> r;
-        int len = r - l + 1;
-        int k = log2(len);
-        cout << min(sparse_table[l][k], sparse_table[r - (1 << k) + 1][k]) << nl;
+        l--; // converting to 0-based index
+        r--; // converting to 0-based index
+        cout << query_log(l, r) << nl;
     }
 }
 int main(void)
