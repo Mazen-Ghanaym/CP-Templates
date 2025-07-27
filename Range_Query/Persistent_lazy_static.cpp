@@ -85,7 +85,12 @@ struct PersistentSegTree {
 
     // Public API: create new version by adding `v` on [l..r] to version `ver`
     void update(int ver, int l, int r, T v) {
-        roots.push_back(update(roots[ver], 1, N, l, r, v));
+        roots[ver] = update(roots[ver], 1, N, l, r, v);
+    }
+
+    void update(int l, int r, T v) {
+        // Update the latest version
+        roots.push_back(update(roots.back(), 1, N, l, r, v));
     }
 
     // Internal query (no longer const, since we may push/clone)
@@ -121,29 +126,27 @@ int main(){
     int n, q;
     cin >> n >> q;
 
-    // Build a PST for an array of size n (initially all zeros)
+    vector<int> a(n);
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
     PersistentSegTree<ll> pst(n);
-
-    // We'll track versions: version 0 is the initial all-zero array.
-    // After each type-1 update, we get a new version (1, 2, ...).
-
-    for(int _ = 0; _ < q; _++){
-        int type;
-        cin >> type;
-        if (type == 1) {
-            // Type 1: update range [l..r] by +v, starting from the latest version
-            int l, r; ll v;
-            cin >> l >> r >> v;
-            int currVer = (int)pst.roots.size() - 1;
-            pst.update(currVer, l, r, v);
-            cout << "Created version " << pst.roots.size()-1 << "\n";
-        }
-        else {
-            // Type 2: query sum on [l..r] from version ver
-            int ver, l, r;
-            cin >> ver >> l >> r;
-            ll ans = pst.query(ver, l, r);
-            cout << ans << "\n";
+    for (int i = 0; i < n; i++) {
+        pst.update(0, i + 1, i + 1, a[i]);
+    }
+    while(q--){
+        char o; cin >> o;
+        if (o == 'C') {
+            int l, r, d; cin >> l >> r >> d;
+            pst.update(l, r, d);
+        } else if (o == 'Q') {
+            int l, r; cin >> l >> r;
+            cout << pst.query(pst.roots.size() - 1, l, r) << '\n';
+        } else if (o == 'H') {
+            int l, r, t; cin >> l >> r >> t;
+            cout << pst.query(t, l, r) << '\n';
+        } else {
+            int t; cin >> t;
+            pst.roots.resize(t + 1);
         }
     }
 
