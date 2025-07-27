@@ -124,6 +124,26 @@ struct PST
     {
         return query(idx, idx, time)->val;
     }
+
+    // count the number of elements greater than k in the range [l, r]
+    int count_greater(int l, int r, int k)
+    {
+        return count_greater(roots[l - 1], roots[r], k, Lx, Rx);
+    }
+    int count_greater(Node *l, Node *r, int k, T lx, T rx)
+    {
+        // if entire segment is above k, take whole difference
+        if (k < lx)
+            return r->val - l->val;
+        // if entire segment is <= k, no contribution
+        if (k >= rx)
+            return 0;
+        // otherwise we straddle k, so split at midpoint
+        T m = lx + (rx - lx) / 2;
+        return count_greater(l->left, r->left, k, lx, m) + count_greater(l->right, r->right, k, m + 1, rx);
+    }
+
+    
 };
 
 void solve(int tc)
