@@ -144,6 +144,22 @@ struct PST
     }
 
     
+    // find the k-th smallest element in the range [l, r]
+    T kth(int l, int r, int k)
+    {
+        return kth(roots[l - 1], roots[r], k, Lx, Rx);
+    }
+    T kth(Node *l, Node *r, int k, T lx, T rx)
+    {
+        if (lx == rx)
+            return lx; // Base case: only one element in the range
+        T m = lx + (rx - lx) / 2;
+        int count = r->left->val - l->left->val; // Count of elements in the left subtree
+        if (count >= k)
+            return kth(l->left, r->left, k, lx, m); // k-th element is in the left subtree
+        else
+            return kth(l->right, r->right, k - count, m + 1, rx); // k-th element is in the right subtree
+    }
 };
 
 void solve(int tc)
