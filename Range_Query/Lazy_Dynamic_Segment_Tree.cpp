@@ -19,7 +19,7 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-
+// ! avoid using #define int long long
 extern struct node *const EMPTY;
 
 struct node {
