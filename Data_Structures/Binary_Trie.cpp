@@ -19,13 +19,7 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio()
-{
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-    #endif
-}
+
 struct BinaryTrie {
 
     struct Node {
@@ -40,10 +34,11 @@ struct BinaryTrie {
     Node* root;
     BinaryTrie(){
         root = new Node;
-        insert(0);
+        // insert(0); // Insert 0 to handle the case of XOR with 0
     }
     
     void insert(const int n){
+        if(search(n)) return; // insert only once
         Node* curr = root;
         for (int i = 40; i >= 0; i--){
             int bit = (n >> i) & 1;
@@ -52,26 +47,39 @@ struct BinaryTrie {
             curr -> freq++;
         }
     }
-  
+
+    bool search(const int n){
+        Node* curr = root;
+        for (int i = 40; i >= 0; i--){
+            int bit = (n >> i) & 1;
+            if(!curr -> child[bit]) return false;
+            curr = curr -> child[bit];
+        }
+        return true;
+    }
+
     void erase(const int n, int idx, Node* curr){
         if(idx == -1){
             return;
         }
         int bit = (n >> idx) & 1;
-        erase(n, idx - 1, curr -> child[bit]);
-        curr -> child[bit] -> freq--;
-        if(curr -> child[bit] -> freq == 0){
-            delete curr -> child[bit];
-            curr -> child[bit] = 0;
+        if (!curr->child[bit]) return;
+        erase(n, idx - 1, curr->child[bit]);
+        curr->child[bit]->freq--;
+        if(curr->child[bit]->freq == 0){
+            delete curr->child[bit];
+            curr->child[bit] = nullptr;
         }
     }
     void erase(const int n){
+        if(!search(n)) return; // erase only if it exists
         erase(n, 40, root);
     }
     int max_xor(const int n){
         Node *curr = root;
         int ans = 0;
         for (int i = 40; i >= 0; i--){
+            if (!curr) break;
             int bit = (n >> i) & 1;
             if(curr -> child[!bit]){
                 ans |= (1LL << i);
@@ -86,6 +94,7 @@ struct BinaryTrie {
         Node *curr = root;
         int ans = 0;
         for (int i = 40; i >= 0; i--){
+            if (!curr) break;
             int bit = (n >> i) & 1;
             if(curr -> child[bit]){
                 curr = curr -> child[bit];
@@ -97,20 +106,31 @@ struct BinaryTrie {
         return ans;
     }
 };
-void solve(int tc)
+void solve()
 {
-    
+    int n;
+    cin >> n;
+    BinaryTrie trie;
+    while (n--)
+    {
+        int type, x;
+        cin >> type >> x;
+        if (type == 0) {
+            trie.insert(x);
+        } else if (type == 1) {
+            trie.erase(x);
+        } else if (type == 2) {
+            cout << trie.min_xor(x) << nl;
+        }
+    }
 }
 signed main(void)
 {
-    fastio();
     int tc = 1;
     //cin >> tc;
-    int i = 1;
     while (tc--)
     {
-        // cout<<"Case #"<<i<<": ";
-        solve(i++);
+        solve();
     }
     return 0;
 }
