@@ -38,7 +38,7 @@ struct BinaryTrie {
     }
     
     void insert(const int n){
-        if(search(n)) return; // insert only once
+        // if(search(n)) return; // insert only once
         Node* curr = root;
         for (int i = 40; i >= 0; i--){
             int bit = (n >> i) & 1;
