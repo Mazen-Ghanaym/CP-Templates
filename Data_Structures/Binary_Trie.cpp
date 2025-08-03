@@ -110,7 +110,7 @@ struct BinaryTrie {
         Node* curr = root;
         int ans = 0;
         int curr_xor = 0;
-        for (int i = 60; i >= 0; i--){
+        for (int i = 40; i >= 0; i--){
             if(!curr) break;
             bool bit = (1LL << i) & pref;
             if((curr_xor | (1LL << i)) >= k){
