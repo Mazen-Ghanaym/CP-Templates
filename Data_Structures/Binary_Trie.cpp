@@ -105,6 +105,25 @@ struct BinaryTrie {
         }
         return ans;
     }
+    // count the number of elements with (pref ^ x) >= k
+    int cnt_sub(int pref, int k){
+        Node* curr = root;
+        int ans = 0;
+        int curr_xor = 0;
+        for (int i = 60; i >= 0; i--){
+            if(!curr) break;
+            bool bit = (1LL << i) & pref;
+            if((curr_xor | (1LL << i)) >= k){
+                ans += curr -> child[bit ^ 1] ? curr -> child[bit ^ 1] -> freq : 0;
+                curr = curr -> child[bit];
+            }else{
+                curr_xor |= (1LL << i);
+                curr = curr -> child[bit ^ 1];
+            }
+        }
+        if(curr_xor >= k) ans += curr -> freq;
+        return ans;
+    }
 };
 void solve()
 {
