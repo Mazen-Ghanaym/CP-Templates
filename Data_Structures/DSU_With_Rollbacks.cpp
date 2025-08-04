@@ -1,3 +1,24 @@
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+#define ll long long
+#define ull unsigned long long
+#define ld long double
+#define int long long
+#define nl "\n"
+#define oo 1e9 + 1
+#define OO 1e18 + 1
+#define sp ' '
+#define sz(x) (int)(x.size())
+#define MOD 1000000007
+#define fixed(n) fixed << setprecision(n)
+#define sub_mod(a, b, m) ((((a) % m) - ((b) % m) + m) % m)
+#define add_mod(a, b, m) ((((a) % m) + ((b) % m)) % m)
+#define mult_mod(a, b, m) ((((a) % m) * ((b) % m)) % m)
+#define EPS 1e-9
+#define PI acos(-1)
+using namespace __gnu_pbds;
+using namespace std;
 template <typename T = int, int Base = 1>
 struct DSU
 {
@@ -71,3 +92,45 @@ struct DSU
         return NumberOfComponents;
     }
 };
+void solve(int tc)
+{
+    int n, q;
+    cin >> n >> q;
+    DSU<int> dsu(n);
+    vector<string> persists;
+    while (q--)
+    {
+        string op;
+        cin >> op;
+        if(op == "union"){
+            int u, v;
+            cin >> u >> v;
+            dsu.union_sets(u, v);
+            persists.push_back(op);
+            cout << dsu.get_components_number() << nl;
+        }else if(op == "rollback"){
+            while(sz(persists) && persists.back() != "persist"){
+                dsu.undo();
+                persists.pop_back();
+            }
+            if(sz(persists)) persists.pop_back();
+            cout << dsu.get_components_number() << nl;
+        }else{
+            persists.push_back(op);
+        }
+    }
+}
+signed main(void)
+{
+    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+    int tc = 1;
+    //cin >> tc;
+    int i = 1;
+    while (tc--)
+    {
+        // cout<<"Case #"<<i<<": ";
+        solve(i++);
+    }
+    return 0;
+}
+
