@@ -19,110 +19,82 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio() {
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-#endif
-}
 // hashing
-const int N = 1e6 + 5;
-const int Base = 31, Mod = 1e9 + 9;
-int pw[N], inv[N];
+const int N = 300005;
+const ll Base1 = 31, Mod1 = 1e9 + 7;
+const ll Base2 = 37, Mod2 = 1e9 + 9;
+
+ll pw1[N], pw2[N];
+
 void init() {
-    pw[0] = 1;
-    for (int i = 1; i < N; i++) pw[i] = (pw[i - 1] * Base) % Mod;
-    inv[N - 1] = 1;
-    int invBase = 1;
-    for (int i = N - 2; i >= 0; i--) {
-        inv[i] = (invBase * pw[i + 1]) % Mod;
-        invBase = (invBase * Base) % Mod;
+    pw1[0] = 1;
+    pw2[0] = 1;
+    for (int i = 1; i < N; i++) {
+        pw1[i] = (pw1[i - 1] * Base1) % Mod1;
+        pw2[i] = (pw2[i - 1] * Base2) % Mod2;
     }
 }
-// prefix hashing
+
 struct Hash {
-    int hsh, len;
+    ll h1, h2;
 };
+
 struct Hashing {
+
     vector<Hash> h;
-    Hashing(string &s) {
+    Hashing(const string &s) {
         int n = sz(s);
-        h.resize(n);
-        h[0].hsh = s[0] - 'A' + 1;
-        h[0].len = 1;
-        for (int i = 1; i < n; i++) {
-            h[i].hsh = (h[i - 1].hsh * Base + s[i] - 'A' + 1) % Mod;
-            h[i].len = h[i - 1].len + 1;
+        h.resize(n + 1, {0, 0}); // Use 1-based indexing
+
+        for (int i = 0; i < n; i++) {
+            h[i + 1].h1 = (h[i].h1 * Base1 + (s[i] - 'a' + 1)) % Mod1;
+            h[i + 1].h2 = (h[i].h2 * Base2 + (s[i] - 'a' + 1)) % Mod2;
         }
     }
-    Hash query(int l, int r) // 0-based index
-    {
-        if (l == 0) return h[r];
-        int len = h[r].len - h[l - 1].len;
-        int hsh = (h[r].hsh - (h[l - 1].hsh * pw[len]) % Mod + Mod) % Mod;
-        return {hsh, len};
+
+    // Queries the hash of the substring from l to r (0-based, inclusive).
+    Hash query(int l, int r) {
+        int len = r - l + 1;
+
+        // Calculate hash for the first modulus
+        ll hsh1 = (h[r + 1].h1 - (h[l].h1 * pw1[len]) % Mod1 + Mod1) % Mod1;
+
+        // Calculate hash for the second modulus
+        ll hsh2 = (h[r + 1].h2 - (h[l].h2 * pw2[len]) % Mod2 + Mod2) % Mod2;
+
+        return {hsh1, hsh2};
+    }
+
+    ull get_hash(int l, int r) {
+        Hash res = query(l, r);
+        return (res.h1 << 32) | res.h2;
     }
 };
 void solve(int tc) {
     int n;
-    cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    if (n == 1) {
-        cout << 1 << nl;
-        return;
+    if (!(cin >> n)) {
+        exit(0);
     }
-    string ltr = "", rtl = "";
-    for (int i = 1; i < n; i++) {
-        if (a[i] > a[i - 1])
-            ltr += 'U';
-        else
-            ltr += 'D';
-    }
-    for (int i = n - 2; i >= 0; i--) {
-        if (a[i] > a[i + 1])
-            rtl += 'U';
-        else
-            rtl += 'D';
-    }
-
-    Hashing h1(ltr), h2(rtl);
-    int cnt = 0;
-    for (int i = 1; i < n; i++) {
-        int l = 1, r = n - 1, ans = 0;
-        while (l <= r) {
-            int mid = (l + r) >> 1;
-            int l1 = i - mid, r1 = i + mid - 1;
-            if (l1 < 0 || r1 >= n - 1) {
-                r = mid - 1;
-                continue;
-            }
-            int l2 = n - r1 - 2, r2 = n - l1 - 2;
-            if (l2 < 0 || r2 >= n - 1) {
-                r = mid - 1;
-                continue;
-            }
-            // cout << l1 << " " << r1 << " " << l2 << " " << r2 << sp << mid << nl;
-            // cout << h1.query(l1 - 1, r1 - 1).hsh << " " << h2.query(l2 - 1, r2 - 1).hsh << nl;
-            if (h1.query(l1, r1).hsh == h2.query(l2, r2).hsh) {
-                ans = mid;
-                l = mid + 1;
-            } else
-                r = mid - 1;
+    string pattern;
+    cin >> pattern;
+    string text;
+    cin >> text;
+    Hashing hash_text(text);
+    Hashing hash_pattern(pattern);
+    ull pattern_hash = hash_pattern.get_hash(0, n - 1);
+    for (int i = 0; i <= sz(text) - n; i++) {
+        ull text_hash = hash_text.get_hash(i, i + n - 1);
+        if (text_hash == pattern_hash) {
+            cout << i << nl;
         }
-        // cout << i << " " << ans << nl;
-        // cout << nl;
-        cnt += ans;
     }
-    cout << cnt + n << nl;
 }
 signed main(void) {
-    fastio();
     init();
     int tc = 1;
     // cin >> tc;
     int i = 1;
-    while (tc--) {
+    while (1) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }
