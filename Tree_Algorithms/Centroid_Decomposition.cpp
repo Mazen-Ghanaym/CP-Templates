@@ -19,75 +19,64 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio()
-{
+void fastio() {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-    #endif
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
+#endif
 }
-template < typename T = int > struct Centroid_Decomposition {
+template <typename T = int> struct Centroid_Decomposition {
 
     int n, treeRoot;
-    const vector < vector < T > > adj;
-    vector < T > SubtreeSz, isCentroid;
+    const vector<vector<T>> adj;
+    vector<T> SubtreeSz, isCentroid;
 
     // Initialize the Centroid Decomposition
-    Centroid_Decomposition(int N, const vector <vector < T > > &G, int Root = 1) : adj(G){
+    Centroid_Decomposition(int N, const vector<vector<T>> &G, int Root = 1) : adj(G) {
         n = N, treeRoot = Root;
-        SubtreeSz = isCentroid = vector < T > (n + 5, 0);
+        SubtreeSz = isCentroid = vector<T>(n + 5, 0);
     }
 
     // update subtree size of each node
-    int updateSize(int u, int p = -1){
+    int updateSize(int u, int p = -1) {
         SubtreeSz[u] = 1;
-        for (int v : adj[u]) 
-            if (v != p && !isCentroid[v]) 
-                SubtreeSz[u] += updateSize(v, u);
+        for (int v : adj[u])
+            if (v != p && !isCentroid[v]) SubtreeSz[u] += updateSize(v, u);
         return SubtreeSz[u];
     }
 
     // get centroid of subtree rooted at u
-    int getCentroid(int u, int target, int p = -1){
-        for(auto& v : adj[u]){
-            if(v == p || isCentroid[v]) continue;
-            if(SubtreeSz[v] * 2 > target) 
-                return getCentroid(v, target, u);
+    int getCentroid(int u, int target, int p = -1) {
+        for (auto &v : adj[u]) {
+            if (v == p || isCentroid[v]) continue;
+            if (SubtreeSz[v] * 2 > target) return getCentroid(v, target, u);
         }
         return u;
     }
 
     // decompose tree into centroid tree
-    void Centroid(int u, int p = 0){
+    void Centroid(int u, int p = 0) {
         int centroidPoint = getCentroid(u, updateSize(u));
-        
+
         // do something with centroid
 
         isCentroid[centroidPoint] = true;
-        for(auto& v : adj[centroidPoint]){
-            if(isCentroid[v]) continue;
+        for (auto &v : adj[centroidPoint]) {
+            if (isCentroid[v]) continue;
             Centroid(v, centroidPoint);
         }
     }
-    
-    // call this function to decompose the tree
-    void Decompose(){
-        Centroid(treeRoot);
-    }
 
+    // call this function to decompose the tree
+    void Decompose() { Centroid(treeRoot); }
 };
-void solve(int tc)
-{
-    
-}
-signed main(void)
-{
+void solve(int tc) {}
+signed main(void) {
     fastio();
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }
