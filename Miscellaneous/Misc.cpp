@@ -21,8 +21,7 @@ using namespace __gnu_pbds;
 using namespace std;
 // generate random -> use rnd() -> rnd()%n
 mt19937 rnd(chrono::steady_clock::now().time_since_epoch().count());
-inline int random(int l, int r)
-{
+inline int random(int l, int r) {
     return rnd() % (r - l + 1) + l;
     // return uniform_int_distribution<int>(l, r)(rnd);
 }
@@ -30,25 +29,15 @@ inline int random(int l, int r)
 // another way to generate random
 mt19937 seed{random_device{}()};
 uniform_int_distribution<int> rnd(INT_MIN, INT_MAX);
-inline int random()
-{
-    return rnd(seed);
-}
-inline int random(int l, int r)
-{
-    return uniform_int_distribution<int>(l, r)(seed);
-}
-void solve(int tc)
-{
-}
-signed main(void)
-{
+inline int random() { return rnd(seed); }
+inline int random(int l, int r) { return uniform_int_distribution<int>(l, r)(seed); }
+void solve(int tc) {}
+signed main(void) {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
     // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

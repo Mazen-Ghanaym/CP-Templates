@@ -20,85 +20,66 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio()
-{
+void fastio() {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-    #ifndef ONLINE_JUDGE
-        freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-    #endif
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
+#endif
 }
-struct Matrix
-{
+struct Matrix {
     vector<vector<int>> mat;
     int n, m;
-    Matrix(int n, int m)
-    {
+    Matrix(int n, int m) {
         this->n = n;
         this->m = m;
         mat.resize(n, vector<int>(m, 0));
     }
-    Matrix(vector<vector<int>> &mat)
-    {
+    Matrix(vector<vector<int>> &mat) {
         this->n = mat.size();
         this->m = mat[0].size();
         this->mat = mat;
     }
-    Matrix identity(int n)
-    {
+    Matrix identity(int n) {
         Matrix c(n, n);
-        for (int i = 0; i < n; i++)
-        {
+        for (int i = 0; i < n; i++) {
             c.mat[i][i] = 1;
         }
         return c;
     }
-    Matrix operator+(Matrix &b)
-    {
+    Matrix operator+(Matrix &b) {
         Matrix c(n, m);
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
                 c.mat[i][j] = add_mod(mat[i][j], b.mat[i][j], MOD);
             }
         }
         return c;
     }
-    Matrix operator-(Matrix &b)
-    {
+    Matrix operator-(Matrix &b) {
         Matrix c(n, m);
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
                 c.mat[i][j] = sub_mod(mat[i][j], b.mat[i][j], MOD);
             }
         }
         return c;
     }
-    Matrix operator*(Matrix &b)
-    {
+    Matrix operator*(Matrix &b) {
         Matrix c(n, b.m);
-        for (int i = 0; i < n; i++)
-        {
-            for (int k = 0; k < m; k++)
-            {
-                for (int j = 0; j < b.m; j++)
-                {
+        for (int i = 0; i < n; i++) {
+            for (int k = 0; k < m; k++) {
+                for (int j = 0; j < b.m; j++) {
                     c.mat[i][j] = add_mod(c.mat[i][j], mult_mod(mat[i][k], b.mat[k][j], MOD), MOD);
                 }
             }
         }
         return c;
     }
-    Matrix operator^(int p)
-    {
+    Matrix operator^(int p) {
         Matrix c = identity(n);
         Matrix a = *this;
-        while (p > 0)
-        {
-            if (p % 2)
-            {
+        while (p > 0) {
+            if (p % 2) {
                 c = c * a;
             }
             a = a * a;
@@ -107,18 +88,13 @@ struct Matrix
         return c;
     }
 };
-void solve(int tc)
-{
-    
-}
-signed main(void)
-{
+void solve(int tc) {}
+signed main(void) {
     fastio();
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }
