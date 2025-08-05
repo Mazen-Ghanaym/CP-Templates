@@ -19,8 +19,7 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio()
-{
+void fastio() {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
@@ -28,85 +27,64 @@ void fastio()
 }
 const int N = 3e5 + 5;
 int pw1[N], inv_pw1[N], base1 = 31, mod1 = 1e9 + 9;
-ll powrmod(ll b, ll n, ll m)
-{
+ll powrmod(ll b, ll n, ll m) {
     ll pow = 1;
-    while (n > 0)
-    {
-        if (n % 2)
-            pow = 1LL * pow * b % m;
+    while (n > 0) {
+        if (n % 2) pow = 1LL * pow * b % m;
         b = 1LL * b * b % m;
         n /= 2;
     }
     return pow;
 }
-void init()
-{
+void init() {
     pw1[0] = 1;
-    inv_pw1[0]  = 1;
+    inv_pw1[0] = 1;
     int inverse1 = powrmod(base1, mod1 - 2, mod1);
-    for (int i = 1; i < N; i++)
-    {
+    for (int i = 1; i < N; i++) {
         pw1[i] = 1LL * pw1[i - 1] * base1 % mod1;
         inv_pw1[i] = 1LL * inv_pw1[i - 1] * inverse1 % mod1;
     }
 }
-struct Hashing
-{
+struct Hashing {
     int h1, len;
-    Hashing()
-    {
+    Hashing() {
         h1 = 0;
         len = 0;
     }
     Hashing(int h1, int len) : h1(h1), len(len) {}
-    void push_back(char c)
-    {
+    void push_back(char c) {
         h1 = add_mod(1LL * h1 * base1 % mod1, c - 'a' + 1, mod1);
         len++;
     }
-    void pop_back(char c)
-    {
-        if (len == 0)
-            return;
+    void pop_back(char c) {
+        if (len == 0) return;
         h1 = sub_mod(h1, c - 'a' + 1, mod1);
         h1 = 1LL * h1 * inv_pw1[1] % mod1;
         len--;
     }
-    void push_front(char c)
-    {
+    void push_front(char c) {
         h1 = add_mod(h1, 1LL * (c - 'a' + 1) * pw1[len] % mod1, mod1);
         len++;
     }
-    void pop_front(char c)
-    {
-        if (len == 0)
-            return;
+    void pop_front(char c) {
+        if (len == 0) return;
         h1 = sub_mod(h1, 1LL * (c - 'a' + 1) * pw1[len - 1] % mod1, mod1);
         len--;
     }
-    int combine_prefix_suffix(const Hashing &prefix,const Hashing &suffix){
+    int combine_prefix_suffix(const Hashing &prefix, const Hashing &suffix) {
         int h1 = add_mod(suffix.h1, 1LL * prefix.h1 * pw1[suffix.len] % mod1, mod1);
         return h1;
     }
-    int get_hash()
-    {
-        return h1;
-    }
+    int get_hash() { return h1; }
 };
-void solve(int tc)
-{
-    
-}
-signed main(void)
-{
+void solve(int tc) {}
+signed main(void) {
     fastio();
     init();
     int tc = 1;
     cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

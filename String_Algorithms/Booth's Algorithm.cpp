@@ -4,8 +4,7 @@ using namespace std;
 
 // Function to find the lexicographically minimal rotation
 // of a string
-int findMinRotation(string &s)
-{
+int findMinRotation(string &s) {
     // Concatenate string to itself to avoid modular
     // arithmetic
     s += s;
@@ -17,33 +16,26 @@ int findMinRotation(string &s)
     int minRotationIdx = 0;
 
     // Iterate over the concatenated string
-    for (int currentIdx = 1; currentIdx < s.size(); ++currentIdx)
-    {
+    for (int currentIdx = 1; currentIdx < s.size(); ++currentIdx) {
         char currentChar = s[currentIdx];
         int failureIdx = failureFunc[currentIdx - minRotationIdx - 1];
 
         // Find the failure function value
-        while (failureIdx != -1 && currentChar != s[minRotationIdx + failureIdx + 1])
-        {
-            if (currentChar < s[minRotationIdx + failureIdx + 1])
-            {
+        while (failureIdx != -1 && currentChar != s[minRotationIdx + failureIdx + 1]) {
+            if (currentChar < s[minRotationIdx + failureIdx + 1]) {
                 minRotationIdx = currentIdx - failureIdx - 1;
             }
             failureIdx = failureFunc[failureIdx];
         }
-        
+
         // Update the failure function and the minimum
         // rotation index
-        if (currentChar != s[minRotationIdx + failureIdx + 1])
-        {
-            if (currentChar < s[minRotationIdx])
-            {
+        if (currentChar != s[minRotationIdx + failureIdx + 1]) {
+            if (currentChar < s[minRotationIdx]) {
                 minRotationIdx = currentIdx;
             }
             failureFunc[currentIdx - minRotationIdx] = -1;
-        }
-        else
-        {
+        } else {
             failureFunc[currentIdx - minRotationIdx] = failureIdx + 1;
         }
     }
@@ -52,15 +44,13 @@ int findMinRotation(string &s)
     // rotation
     return minRotationIdx;
 }
-void fastio()
-{
+void fastio() {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
 #endif
 }
-int main()
-{
+int main() {
     fastio();
     // input string
     string s;
@@ -70,8 +60,7 @@ int main()
     int minRotationIdx = findMinRotation(s);
 
     // Print the lexicographically minimal rotation
-    cout << s.substr(minRotationIdx) + s.substr(0, minRotationIdx)
-         << endl;
+    cout << s.substr(minRotationIdx) + s.substr(0, minRotationIdx) << endl;
 
     return 0;
 }
