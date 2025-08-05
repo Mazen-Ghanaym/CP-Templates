@@ -28,93 +28,73 @@ using namespace std;
 // it's like the idea of 2d segment tree but we are not building the segment tree
 // we have fenwick tree for each row and each column
 
-template <bool one_based = true>
-struct FenwickTree2d
-{
+template <bool one_based = true> struct FenwickTree2d {
     vector<vector<int>> bit;
     int n, m;
 
-    FenwickTree2d(int n, int m)
-    {
+    FenwickTree2d(int n, int m) {
         this->n = n + 1;
         this->m = m + 1;
         bit.assign(n + 1, vector<int>(m + 1, 0));
     }
 
-    void update(int r, int c, int delta)
-    {
+    void update(int r, int c, int delta) {
         for (int x = r + (!one_based); x < n; x += x & -x)
-            for (int y = c + (!one_based); y < m; y += y & -y)
-                bit[x][y] += delta;
+            for (int y = c + (!one_based); y < m; y += y & -y) bit[x][y] += delta;
     }
 
-    void set(int r, int c, int new_val)
-    {
+    void set(int r, int c, int new_val) {
         int old_val = query(r, c) - query(r - 1, c) - query(r, c - 1) + query(r - 1, c - 1);
         update(r, c, new_val - old_val);
     }
 
-    int query(int r, int c)
-    {
+    int query(int r, int c) {
         int ret = 0;
         for (int x = r + (!one_based); x > 0; x -= x & -x)
-            for (int y = c + (!one_based); y > 0; y -= y & -y)
-                ret += bit[x][y];
+            for (int y = c + (!one_based); y > 0; y -= y & -y) ret += bit[x][y];
         return ret;
     }
 
-    int query(int r1, int c1, int r2, int c2)
-    {
+    int query(int r1, int c1, int r2, int c2) {
         return query(r2, c2) - query(r1 - 1, c2) - query(r2, c1 - 1) + query(r1 - 1, c1 - 1);
     }
 };
-void solve(int tc)
-{
+void solve(int tc) {
     int n, m;
     cin >> n >> m;
     vector<vector<int>> a(n + 1, vector<int>(m + 1));
     for (int i = 1; i <= n; ++i)
-        for (int j = 1; j <= m; ++j)
-            cin >> a[i][j];
+        for (int j = 1; j <= m; ++j) cin >> a[i][j];
     FenwickTree2d<true> ft(n, m);
     for (int i = 1; i <= n; ++i)
-        for (int j = 1; j <= m; ++j)
-            ft.update(i, j, a[i][j]);
+        for (int j = 1; j <= m; ++j) ft.update(i, j, a[i][j]);
 
-    for (int i = 1; i <= n; ++i)
-    {
-        for (int j = 1; j <= m; ++j)
-            cout << ft.query(i, j) << sp;
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= m; ++j) cout << ft.query(i, j) << sp;
         cout << nl;
     }
     int q;
     cin >> q;
-    while (q--)
-    {
+    while (q--) {
         int type;
         cin >> type;
-        if (type == 1)
-        {
+        if (type == 1) {
             int x, y, new_val;
             cin >> x >> y >> new_val;
             ft.set(x, y, new_val);
-        }
-        else
-        {
+        } else {
             int r1, c1, r2, c2;
             cin >> r1 >> c1 >> r2 >> c2;
             cout << ft.query(r1, c1, r2, c2) << nl;
         }
     }
 }
-signed main(void)
-{
+signed main(void) {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
     // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

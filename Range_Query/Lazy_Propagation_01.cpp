@@ -20,7 +20,7 @@
 using namespace __gnu_pbds;
 using namespace std;
 // lazy propagation range change point query
-// used for problems like 
+// used for problems like
 // 1 l r x y   change all elements in range from l to r has value x to y
 // 2 idx       query the value at index idx
 struct LazyBinTreeUniversal {
@@ -30,22 +30,15 @@ struct LazyBinTreeUniversal {
     vector<T> t;
     vector<TMod> mod;
     size_t h;
- 
-    LazyBinTreeUniversal(size_t N) :
-        size(N),
-        t(2 * N),
-        mod(N, modInit()),
-        h(32 - __builtin_clz(N)) { }
- 
-    LazyBinTreeUniversal(const vector<T>& other) :
-        size(other.size()),
-        t(2 * other.size()),
-        mod(other.size(), modInit()),
-        h(32 - __builtin_clz(other.size())) {
+
+    LazyBinTreeUniversal(size_t N) : size(N), t(2 * N), mod(N, modInit()), h(32 - __builtin_clz(N)) {}
+
+    LazyBinTreeUniversal(const vector<T> &other)
+        : size(other.size()), t(2 * other.size()), mod(other.size(), modInit()), h(32 - __builtin_clz(other.size())) {
         copy(other.begin(), other.end(), t.begin() + size);
     }
- 
-    void apply(size_t p, const TMod& up_mod) {
+
+    void apply(size_t p, const TMod &up_mod) {
         if (p < size) {
             if (mod[p][0] == 0) {
                 mod[p] = up_mod;
@@ -56,7 +49,7 @@ struct LazyBinTreeUniversal {
             t[p] = combineValue(t[p], up_mod);
         }
     }
- 
+
     void push(size_t p) {
         for (size_t s = h; s > 0; s--) {
             size_t pos = p >> s;
@@ -67,8 +60,8 @@ struct LazyBinTreeUniversal {
             }
         }
     }
- 
-    void modify(size_t l, size_t r, const TMod& value) {
+
+    void modify(size_t l, size_t r, const TMod &value) {
         if (l == r) return;
         l += size;
         r += size;
@@ -87,30 +80,26 @@ struct LazyBinTreeUniversal {
             r /= 2;
         }
     }
- 
+
     T query(size_t p) {
         p += size;
         push(p);
         return t[p];
     }
+
   private:
- 
-    TMod combineMod(const TMod& mod, const TMod& up_mod) {
+    TMod combineMod(const TMod &mod, const TMod &up_mod) {
         TMod result = {};
         for (size_t i = 0; i < result.size(); i++) {
             result[i] = up_mod[mod[i]];
         }
         return result;
     }
- 
-    T combineValue(T value, const TMod& up_mod) {
-        return up_mod[value];
-    }
- 
-    T init() {
-        return 0;
-    }
- 
+
+    T combineValue(T value, const TMod &up_mod) { return up_mod[value]; }
+
+    T init() { return 0; }
+
     TMod modInit() {
         TMod result = {};
         iota(result.begin(), result.end(), 0);
@@ -118,18 +107,13 @@ struct LazyBinTreeUniversal {
     }
 };
 
-void solve(int tc)
-{
-    
-}
-signed main(void)
-{
+void solve(int tc) {}
+signed main(void) {
     fastio();
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

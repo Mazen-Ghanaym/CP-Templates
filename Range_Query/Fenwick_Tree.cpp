@@ -44,8 +44,7 @@ using namespace std;
 
 // for range update and point query we use the difference array trick
 // add(l, val) , add(r + 1, -val)
-template<bool one_based = true>
-struct FenwickTree {
+template <bool one_based = true> struct FenwickTree {
     vector<int> bit;
     int n;
 
@@ -54,42 +53,31 @@ struct FenwickTree {
         bit.assign(n + 1, 0);
     }
 
-    FenwickTree(vector<int> a)
-        : FenwickTree(a.size()) {
-        for (size_t i = 0; i < a.size(); i++)
-            add(i + one_based, a[i]);
+    FenwickTree(vector<int> a) : FenwickTree(a.size()) {
+        for (size_t i = 0; i < a.size(); i++) add(i + one_based, a[i]);
     }
 
     int sum(int idx) {
         int ret = 0;
-        for (idx += (!one_based); idx > 0; idx -= idx & -idx){
+        for (idx += (!one_based); idx > 0; idx -= idx & -idx) {
             ret += bit[idx];
         }
         return ret;
     }
 
-    int sum(int l, int r) {
-        return sum(r) - (l - 1 >= 0 ? sum(l - 1) : 0);
-    }
+    int sum(int l, int r) { return sum(r) - (l - 1 >= 0 ? sum(l - 1) : 0); }
 
     void add(int idx, int delta) {
-        for (idx += (!one_based); idx < n; idx += idx & -idx){
+        for (idx += (!one_based); idx < n; idx += idx & -idx) {
             bit[idx] += delta;
         }
     }
 
-    int get(int idx)
-    {
-        return sum(idx) - sum(idx - 1);
-    }
- 
-    void set(int idx, int val)
-    {
-        add(idx, val - get(idx));
-    }
-    
-    void update_range(int l, int r, int val)
-    {
+    int get(int idx) { return sum(idx) - sum(idx - 1); }
+
+    void set(int idx, int val) { add(idx, val - get(idx)); }
+
+    void update_range(int l, int r, int val) {
         add(l, val);
         add(r + 1, -val);
     }
@@ -117,41 +105,33 @@ struct FenwickTree {
         return idx + one_based;
     }
 };
-void solve(int tc)
-{
+void solve(int tc) {
     int n, q;
     cin >> n >> q;
     vector<int> a(n);
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> a[i];
     FenwickTree<1> ft(a);
-    while (q--)
-    {
+    while (q--) {
         int t;
         cin >> t;
-        if (t == 1)
-        {
+        if (t == 1) {
             int k, u;
             cin >> k >> u;
             ft.add(k, u);
             a[k] = u;
-        }
-        else
-        {
+        } else {
             int l, r;
             cin >> l >> r;
             cout << ft.sum(l, r) << nl;
         }
     }
 }
-signed main(void)
-{
+signed main(void) {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

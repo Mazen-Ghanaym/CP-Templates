@@ -32,13 +32,12 @@ using namespace std;
 // 0 0 5 5 5 0 0  as you see here we add 5 to the numbers from 3 to 5
 // as we did with point query and range update we can do the same with range query and range update
 // add(bit1, l, val), add(bit1, r + 1, -val) but this will not tell you the commulitive of the numbers from l to r
-// so add(bit2, l, val * (l - 1)), add(bit2, r + 1, -val * r) this will tell you the commulitive of the numbers from l to r
-// so the answer to get a prefix_sum(i) = sum(bit1, i) * i - sum(bit2, i)  
+// so add(bit2, l, val * (l - 1)), add(bit2, r + 1, -val * r) this will tell you the commulitive of the numbers from l
+// to r so the answer to get a prefix_sum(i) = sum(bit1, i) * i - sum(bit2, i)
 //  0 * i - 0 , i < l
-//  x * i - x * (l-1) , l <= i <= r 
+//  x * i - x * (l-1) , l <= i <= r
 //  0 * i - (x * (l-1) - x * r), i > r  -> x * (r - l + 1)
-template<bool one_based = true>
-struct FenwickTree {
+template <bool one_based = true> struct FenwickTree {
     vector<int> bit1, bit2;
     int n;
 
@@ -48,30 +47,24 @@ struct FenwickTree {
         bit2.assign(n + 2, 0);
     }
 
-    FenwickTree(vector<int> a)
-        : FenwickTree(a.size()) {
-        for (size_t i = 0; i < a.size(); i++)
-            update(i + one_based, i + one_based, a[i]);
+    FenwickTree(vector<int> a) : FenwickTree(a.size()) {
+        for (size_t i = 0; i < a.size(); i++) update(i + one_based, i + one_based, a[i]);
     }
 
     int sum(vector<int> &bit, int idx) {
         int ret = 0;
-        for (idx += (!one_based); idx > 0; idx -= idx & -idx){
+        for (idx += (!one_based); idx > 0; idx -= idx & -idx) {
             ret += bit[idx];
         }
         return ret;
     }
 
-    int sum(int idx) {
-        return sum(bit1, idx) * idx - sum(bit2, idx);
-    }
+    int sum(int idx) { return sum(bit1, idx) * idx - sum(bit2, idx); }
 
-    int sum(int l, int r) {
-        return sum(r) - (l - 1 >= 0 ? sum(l - 1) : 0);
-    }
+    int sum(int l, int r) { return sum(r) - (l - 1 >= 0 ? sum(l - 1) : 0); }
 
     void update(vector<int> &bit, int idx, int delta) {
-        for (idx += (!one_based); idx < n; idx += idx & -idx){
+        for (idx += (!one_based); idx < n; idx += idx & -idx) {
             bit[idx] += delta;
         }
     }
@@ -83,38 +76,32 @@ struct FenwickTree {
         update(bit2, r + 1, -delta * r);
     }
 };
-void solve(int tc)
-{
+void solve(int tc) {
     int n, q;
     cin >> n >> q;
     vector<int> a(n);
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> a[i];
     FenwickTree<true> ft(a);
-    while (q--)
-    {
+    while (q--) {
         int type;
         cin >> type;
-        if (type == 1){
+        if (type == 1) {
             int l, r, v;
             cin >> l >> r >> v;
             ft.update(l, r, v);
-        }
-        else{
+        } else {
             int l, r;
             cin >> l >> r;
             cout << ft.sum(l, r) << nl;
         }
     }
 }
-signed main(void)
-{
+signed main(void) {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

@@ -4,7 +4,7 @@
 #define ll long long
 #define ull unsigned long long
 #define ld long double
-//#define int long long
+// #define int long long
 #define nl "\n"
 #define oo 1e9 + 1
 #define OO 1e18 + 1
@@ -76,10 +76,7 @@ int query(int ql, int qr, node *&cur, int lx = 1, int rx = 1e9) {
     return query(ql, qr, cur->l, lx, mid) + query(ql, qr, cur->r, mid + 1, rx);
 }
 
-
-
-void solve(int tc)
-{
+void solve(int tc) {
     int q, c = 0;
     cin >> q;
     node *root = EMPTY;
@@ -94,14 +91,12 @@ void solve(int tc)
             update(l, r, 1, root);
     }
 }
-signed main(void)
-{
+signed main(void) {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

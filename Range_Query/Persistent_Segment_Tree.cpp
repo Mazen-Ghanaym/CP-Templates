@@ -21,24 +21,19 @@ using namespace __gnu_pbds;
 using namespace std;
 // 1-based indexing
 // 1-based version indexing
-template <typename T = int>
-struct PST
-{
+template <typename T = int> struct PST {
 
-    struct Node
-    {
+    struct Node {
 
         T val;
         Node *left, *right;
 
-        Node(T _val = 0)
-        {
+        Node(T _val = 0) {
             this->val = _val;
             left = right = this;
         }
 
-        Node(Node *node, Node *l = new Node, Node *r = new Node)
-        {
+        Node(Node *node, Node *l = new Node, Node *r = new Node) {
             val = node->val;
             left = l;
             right = r;
@@ -53,106 +48,66 @@ struct PST
 
     // use build if the nums represents the frequency of the elements
     // and the elements are in the range [1, n]
-    Node *build(const vector<T> &nums, T l, T r)
-    {
-        if (l == r)
-            return new Node(nums[l - 1]);
+    Node *build(const vector<T> &nums, T l, T r) {
+        if (l == r) return new Node(nums[l - 1]);
         T mx = l + (r - l) / 2;
         Node *L = build(nums, l, mx);
         Node *R = build(nums, mx + 1, r);
         return new Node(merge(L, R), L, R);
     }
 
-    void build(const vector<T> &nums)
-    {
-        roots.push_back(build(nums, Lx, Rx));
-    }
+    void build(const vector<T> &nums) { roots.push_back(build(nums, Lx, Rx)); }
 
-    Node *merge(Node *a, Node *b)
-    {
+    Node *merge(Node *a, Node *b) {
         Node *node = new Node();
         node->val = a->val + b->val;
         return node;
     }
 
-    Node *update(Node *root, int idx, T val, T lx, T rx)
-    {
-        if (idx < lx || idx > rx)
-            return root;
-        if (lx == rx)
-            return new Node(val);
+    Node *update(Node *root, int idx, T val, T lx, T rx) {
+        if (idx < lx || idx > rx) return root;
+        if (lx == rx) return new Node(val);
         T mx = lx + (rx - lx) / 2;
         Node *L = update(root->left, idx, val, lx, mx);
         Node *R = update(root->right, idx, val, mx + 1, rx);
         return new Node(merge(L, R), L, R);
     }
 
-    void update(int idx, T val)
-    {
-        roots.push_back(update(roots.back(), idx, val, Lx, Rx));
-    }
+    void update(int idx, T val) { roots.push_back(update(roots.back(), idx, val, Lx, Rx)); }
 
-    void update_version(int idx, T val, int version)
-    {
-        roots[version] = (update(roots[version], idx, val, Lx, Rx));
-    }
-    Node *query(Node *root, int l, int r, T lx, T rx)
-    {
-        if (root == nullptr)
-            return new Node(); // Base case for null pointer
-        if (lx > r || l > rx)
-            return new Node(); // Base case for out-of-range interval
-        if (lx >= l && rx <= r)
-            return root;
+    void update_version(int idx, T val, int version) { roots[version] = (update(roots[version], idx, val, Lx, Rx)); }
+    Node *query(Node *root, int l, int r, T lx, T rx) {
+        if (root == nullptr) return new Node();  // Base case for null pointer
+        if (lx > r || l > rx) return new Node(); // Base case for out-of-range interval
+        if (lx >= l && rx <= r) return root;
         int mx = lx + (rx - lx) / 2;
         Node *L = query(root->left, l, r, lx, mx);
         Node *R = query(root->right, l, r, mx + 1, rx);
         return merge(L, R);
     }
 
-    T query(int l, int r, int version)
-    {
-        return query(roots[version], l, r, Lx, Rx)->val;
-    }
+    T query(int l, int r, int version) { return query(roots[version], l, r, Lx, Rx)->val; }
 
-    void copy(int version)
-    {
-        roots.push_back(roots[version]);
-    }
+    void copy(int version) { roots.push_back(roots[version]); }
 
-    T get(int time, int idx)
-    {
-        return query(idx, idx, time)->val;
-    }
+    T get(int time, int idx) { return query(idx, idx, time)->val; }
 
     // count the number of elements greater than k in the range [l, r]
-    int count_greater(int l, int r, int k)
-    {
-        return count_greater(roots[l - 1], roots[r], k, Lx, Rx);
-    }
-    int count_greater(Node *l, Node *r, int k, T lx, T rx)
-    {
+    int count_greater(int l, int r, int k) { return count_greater(roots[l - 1], roots[r], k, Lx, Rx); }
+    int count_greater(Node *l, Node *r, int k, T lx, T rx) {
         // if entire segment is above k, take whole difference
-        if (k < lx)
-            return r->val - l->val;
+        if (k < lx) return r->val - l->val;
         // if entire segment is <= k, no contribution
-        if (k >= rx)
-            return 0;
+        if (k >= rx) return 0;
         // otherwise we straddle k, so split at midpoint
         T m = lx + (rx - lx) / 2;
         return count_greater(l->left, r->left, k, lx, m) + count_greater(l->right, r->right, k, m + 1, rx);
     }
 
-    
     // find the k-th smallest element in the range [l, r]
-    T kth(int l, int r, int k)
-    {
-        return kth(roots[l - 1], roots[r], k, Lx, Rx);
-    }
-    T kth(Node *l, Node *r, int k, T lx, T rx)
-    {
-        if (lx == rx)
-            return lx; // Base case: only one element in the range
+    T kth(int l, int r, int k) { return kth(roots[l - 1], roots[r], k, Lx, Rx); }
+    T kth(Node *l, Node *r, int k, T lx, T rx) {
+        if (lx == rx) return lx; // Base case: only one element in the range
         T m = lx + (rx - lx) / 2;
         int count = r->left->val - l->left->val; // Count of elements in the left subtree
         if (count >= k)
@@ -162,41 +117,33 @@ struct PST
     }
 };
 
-void solve(int tc)
-{
+void solve(int tc) {
     int n, q;
     cin >> n >> q;
     vector<int> a(n);
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
+    for (int i = 0; i < n; i++) cin >> a[i];
     PST<int> pst(n, 1, n);
     pst.build(a);
-    while (q--)
-    {
+    while (q--) {
         int type;
         cin >> type;
-        if (type == 1)
-        {
+        if (type == 1) {
             int idx, val;
             cin >> idx >> val;
             pst.update(idx, val);
-        }
-        else if (type == 2)
-        {
+        } else if (type == 2) {
             int k, l, r;
             cin >> k >> l >> r;
             cout << pst.query(l, r, k) << nl;
         }
     }
 }
-signed main(void)
-{
+signed main(void) {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
     // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

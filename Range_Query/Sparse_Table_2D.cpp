@@ -9,18 +9,15 @@ using namespace std;
 // Preprocessing Time: O(N * M * log(N) * log(M))
 // Query Time: O(1)
 //! zero-based indexing in query
-template <typename T>
-struct SparseTable2D {
+template <typename T> struct SparseTable2D {
     int n, m;
     vector<vector<vector<vector<T>>>> st;
     vector<int> log_table;
 
     // The function to be applied (e.g., min, max, gcd)
-    T func(T a, T b) {
-        return min(a, b);
-    }
+    T func(T a, T b) { return min(a, b); }
 
-    SparseTable2D(const vector<vector<T>>& matrix) {
+    SparseTable2D(const vector<vector<T>> &matrix) {
         n = matrix.size();
         if (n == 0) return;
         m = matrix[0].size();
@@ -37,9 +34,7 @@ struct SparseTable2D {
         int max_log_n = log_table[n];
         int max_log_m = log_table[m];
 
-        st.resize(max_log_n + 1, vector<vector<vector<T>>>(
-            max_log_m + 1, vector<vector<T>>(
-                n, vector<T>(m))));
+        st.resize(max_log_n + 1, vector<vector<vector<T>>>(max_log_m + 1, vector<vector<T>>(n, vector<T>(m))));
 
         // Base case: st[0][0] is the original matrix
         for (int i = 0; i < n; i++) {
@@ -77,7 +72,7 @@ struct SparseTable2D {
 
         T res1 = func(st[k1][k2][r1][c1], st[k1][k2][r1][c2 - (1 << k2) + 1]);
         T res2 = func(st[k1][k2][r2 - (1 << k1) + 1][c1], st[k1][k2][r2 - (1 << k1) + 1][c2 - (1 << k2) + 1]);
-        
+
         return func(res1, res2);
     }
 };

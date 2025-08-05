@@ -31,35 +31,32 @@ using namespace std;
 /*
 sparse table for range min query
     0 1 2 3 4 5 6 7 8 9
-    
+
     0 0 0 0
-    1 1 1 1 
-    2 2 2 2 
-    3 3 3 
-    4 4 4 
-    5 5 5 
+    1 1 1 1
+    2 2 2 2
+    3 3 3
+    4 4 4
+    5 5 5
     6 6 6
-    7 7 
-    8 8 
+    7 7
+    8 8
     9
 */
 vector<vector<int>> sparse_table;
 vector<int> arr;
 int LOG = 20;
 int n;
-void solve(int tc)
-{
+void solve(int tc) {
     cin >> n;
     int q;
     cin >> q;
     LOG = log2(n) + 1;
     arr.resize(n);
     sparse_table.resize(n, vector<int>(LOG));
-    for (int i = 0; i < n; ++i)
-        cin >> arr[i];
+    for (int i = 0; i < n; ++i) cin >> arr[i];
     // build sparse table
-    for (int i = 0; i < n; ++i)
-        sparse_table[i][0] = arr[i];
+    for (int i = 0; i < n; ++i) sparse_table[i][0] = arr[i];
     for (int j = 1; j < LOG; ++j)
         for (int i = 0; i + (1 << j) <= n; ++i)
             sparse_table[i][j] = min(sparse_table[i][j - 1], sparse_table[i + (1 << (j - 1))][j - 1]);
@@ -80,8 +77,7 @@ void solve(int tc)
         return res;
     };
     // query
-    while (q--)
-    {
+    while (q--) {
         int l, r;
         cin >> l >> r;
         l--; // converting to 0-based index
@@ -89,13 +85,11 @@ void solve(int tc)
         cout << query_log(l, r) << nl;
     }
 }
-int main(void)
-{
+int main(void) {
     int tc = 1;
-    //cin >> tc;
+    // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

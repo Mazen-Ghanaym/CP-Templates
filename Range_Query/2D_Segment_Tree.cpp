@@ -53,86 +53,57 @@ using namespace std;
     if i query from row 1 to row 3 so i will reach the node contains sum of the 2 rows 6, 8, 10, 12
     and the node contains the sum of the third row 1, 2, 3, 4 and query from them on columns and merge results
 */
-struct SegTree2D
-{
+struct SegTree2D {
     int n, m;
     vector<vector<int>> t;
     int Default = 0; // default value for the segment tree and return value for invalid queries
     SegTree2D(int n, int m) : n(n), m(m), t(4 * n, vector<int>(4 * m, Default)) {}
-    SegTree2D(int n, int m, vector<vector<int>> &a) : n(n), m(m), t(4 * n, vector<int>(4 * m, Default)){ build(a); }
-    void build_y(int vx, int lx, int rx, int vy, int ly, int ry, vector<vector<int>> &a)
-    {
-        if (ly == ry)
-        {
-            if (lx == rx)
-            {
-                if (lx <= a.size() && ly <= a[0].size())
-                    t[vx][vy] = a[lx - 1][ly - 1];
-            }
-            else
+    SegTree2D(int n, int m, vector<vector<int>> &a) : n(n), m(m), t(4 * n, vector<int>(4 * m, Default)) { build(a); }
+    void build_y(int vx, int lx, int rx, int vy, int ly, int ry, vector<vector<int>> &a) {
+        if (ly == ry) {
+            if (lx == rx) {
+                if (lx <= a.size() && ly <= a[0].size()) t[vx][vy] = a[lx - 1][ly - 1];
+            } else
                 t[vx][vy] = merge(t[vx * 2][vy], t[vx * 2 + 1][vy]);
-        }
-        else
-        {
+        } else {
             int my = (ly + ry) / 2;
             build_y(vx, lx, rx, vy * 2, ly, my, a);
             build_y(vx, lx, rx, vy * 2 + 1, my + 1, ry, a);
             t[vx][vy] = merge(t[vx][vy * 2], t[vx][vy * 2 + 1]);
         }
     }
-    void build_x(int vx, int lx, int rx, vector<vector<int>> &a)
-    {
-        if (lx != rx)
-        {
+    void build_x(int vx, int lx, int rx, vector<vector<int>> &a) {
+        if (lx != rx) {
             int mx = (lx + rx) / 2;
             build_x(vx * 2, lx, mx, a);
             build_x(vx * 2 + 1, mx + 1, rx, a);
         }
         build_y(vx, lx, rx, 1, 1, m, a);
     }
-    void build(vector<vector<int>> &a)
-    {
-        build_x(1, 1, n, a);
-    }
-    int merge(int a, int b)
-    {
-        return a + b;
-    }
-    int query_y(int vx, int vy, int tly, int try_, int ly, int ry)
-    {
-        if (ly > ry)
-            return Default;
-        if (ly == tly && try_ == ry)
-            return t[vx][vy];
+    void build(vector<vector<int>> &a) { build_x(1, 1, n, a); }
+    int merge(int a, int b) { return a + b; }
+    int query_y(int vx, int vy, int tly, int try_, int ly, int ry) {
+        if (ly > ry) return Default;
+        if (ly == tly && try_ == ry) return t[vx][vy];
         int tmy = (tly + try_) / 2;
         return merge(query_y(vx, vy * 2, tly, tmy, ly, min(ry, tmy)),
                      query_y(vx, vy * 2 + 1, tmy + 1, try_, max(ly, tmy + 1), ry));
     }
-    int query_x(int vx, int tlx, int trx, int lx, int rx, int ly, int ry)
-    {
-        if (lx > rx)
-            return Default;
-        if (lx == tlx && trx == rx)
-            return query_y(vx, 1, 1, m, ly, ry);
+    int query_x(int vx, int tlx, int trx, int lx, int rx, int ly, int ry) {
+        if (lx > rx) return Default;
+        if (lx == tlx && trx == rx) return query_y(vx, 1, 1, m, ly, ry);
         int tmx = (tlx + trx) / 2;
         return merge(query_x(vx * 2, tlx, tmx, lx, min(rx, tmx), ly, ry),
                      query_x(vx * 2 + 1, tmx + 1, trx, max(lx, tmx + 1), rx, ly, ry));
     }
-    int query(int lx, int rx, int ly, int ry)
-    {
-        return query_x(1, 1, n, lx, rx, ly, ry);
-    }
-    void update_y(int vx, int lx, int rx, int vy, int ly, int ry, int x, int y, int new_val)
-    {
-        if (ly == ry)
-        {
+    int query(int lx, int rx, int ly, int ry) { return query_x(1, 1, n, lx, rx, ly, ry); }
+    void update_y(int vx, int lx, int rx, int vy, int ly, int ry, int x, int y, int new_val) {
+        if (ly == ry) {
             if (lx == rx)
                 t[vx][vy] = new_val;
             else
                 t[vx][vy] = merge(t[vx * 2][vy], t[vx * 2 + 1][vy]);
-        }
-        else
-        {
+        } else {
             int my = (ly + ry) / 2;
             if (y <= my)
                 update_y(vx, lx, rx, vy * 2, ly, my, x, y, new_val);
@@ -141,10 +112,8 @@ struct SegTree2D
             t[vx][vy] = merge(t[vx][vy * 2], t[vx][vy * 2 + 1]);
         }
     }
-    void update_x(int vx, int lx, int rx, int x, int y, int new_val)
-    {
-        if (lx != rx)
-        {
+    void update_x(int vx, int lx, int rx, int x, int y, int new_val) {
+        if (lx != rx) {
             int mx = (lx + rx) / 2;
             if (x <= mx)
                 update_x(vx * 2, lx, mx, x, y, new_val);
@@ -153,48 +122,37 @@ struct SegTree2D
         }
         update_y(vx, lx, rx, 1, 1, m, x, y, new_val);
     }
-    void update(int x, int y, int new_val)
-    {
-        update_x(1, 1, n, x, y, new_val);
-    }
+    void update(int x, int y, int new_val) { update_x(1, 1, n, x, y, new_val); }
 };
-void solve(int tc)
-{
+void solve(int tc) {
     int n, m;
     cin >> n >> m;
     vector<vector<int>> a(n, vector<int>(m));
     for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j)
-            cin >> a[i][j];
+        for (int j = 0; j < m; ++j) cin >> a[i][j];
     SegTree2D st(n, m, a);
     int q;
     cin >> q;
-    while (q--)
-    {
+    while (q--) {
         int type;
         cin >> type;
-        if (type == 1)
-        {
+        if (type == 1) {
             int x, y, new_val;
             cin >> x >> y >> new_val;
             st.update(x, y, new_val);
-        }
-        else
-        {
+        } else {
             int r1, c1, r2, c2;
             cin >> r1 >> c1 >> r2 >> c2;
             cout << st.query(r1, r2, c1, c2) << nl;
         }
     }
 }
-signed main(void)
-{
+signed main(void) {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
     // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }

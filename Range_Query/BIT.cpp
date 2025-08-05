@@ -19,83 +19,61 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio()
-{
+void fastio() {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
 #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
 #endif
 }
-template <typename T = int>
-struct Fenwick_Tree
-{
+template <typename T = int> struct Fenwick_Tree {
 
     vector<T> Tree;
     int n;
     T DEFAULT;
 
-    Fenwick_Tree(int N = 0)
-    {
+    Fenwick_Tree(int N = 0) {
         n = N + 1, DEFAULT = 0;
         Tree.assign(n + 10, DEFAULT);
     }
 
-    T operation(T a, T b)
-    {
-        return a + b;
+    T operation(T a, T b) { return a + b; }
+
+    int lowest_bit(int idx) { return (idx & -idx); }
+
+    void build(vector<T> &nums) {
+        for (int i = 0; i < sz(nums); i++) add(i, nums[i]);
     }
 
-    int lowest_bit(int idx)
-    {
-        return (idx & -idx);
-    }
-
-    void build(vector<T> &nums)
-    {
-        for (int i = 0; i < sz(nums); i++)
-            add(i, nums[i]);
-    }
-
-    void add(int idx, T val)
-    {
+    void add(int idx, T val) {
         idx++;
-        while (idx <= n)
-        {
+        while (idx <= n) {
             Tree[idx] = operation(Tree[idx], val);
             idx += lowest_bit(idx);
         }
     }
 
-    T get_ans(int idx)
-    {
+    T get_ans(int idx) {
         T ans = DEFAULT;
         idx++;
-        while (idx)
-        {
+        while (idx) {
             ans = operation(ans, Tree[idx]);
             idx -= lowest_bit(idx);
         }
         return ans;
     }
 
-    T query(int l, int r)
-    {
-        if (l > r)
-            swap(l, r);
+    T query(int l, int r) {
+        if (l > r) swap(l, r);
         return get_ans(r) - get_ans(l - 1);
     }
 };
-void solve(int tc)
-{
-}
-signed main(void)
-{
+void solve(int tc) {}
+signed main(void) {
     fastio();
     int tc = 1;
     // cin >> tc;
     int i = 1;
-    while (tc--)
-    {
+    while (tc--) {
         // cout<<"Case #"<<i<<": ";
         solve(i++);
     }
