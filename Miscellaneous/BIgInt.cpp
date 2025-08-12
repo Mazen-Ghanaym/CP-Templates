@@ -19,16 +19,17 @@
 using namespace __gnu_pbds;
 using namespace std;
 
-ostream &operator<<(ostream &os, __int128_t value)
-{
-    if (value == 0)
-    {
+ostream &operator<<(ostream &os, __int128_t value) {
+    if (value == 0) {
         os << "0";
         return os;
     }
+    if (value < 0) {
+        os << "-";
+        value = -value;
+    }
     string s;
-    while (value > 0)
-    {
+    while (value > 0) {
         s += char(value % 10 + '0');
         value /= 10;
     }
@@ -37,31 +38,32 @@ ostream &operator<<(ostream &os, __int128_t value)
     return os;
 }
 
-istream &operator>>(istream &is, __int128_t &value)
-{
+istream &operator>>(istream &is, __int128_t &value) {
     string s;
     is >> s;
     value = 0;
-    for (char c : s)
-    {
+    bool is_negative = false;
+    if (s[0] == '-') {
+        is_negative = true;
+        s = s.substr(1);
+    }
+    for (char c : s) {
         value = value * 10 + (c - '0');
     }
+    if (is_negative) value = -value;
     return is;
 }
 
-void solve()
-{
+void solve() {
     __int128_t n, m;
     cin >> n >> m;
     cout << n + m << "\n";
 }
-signed main(void)
-{
+signed main(void) {
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     int tc = 1;
     cin >> tc;
-    while (tc--)
-    {
+    while (tc--) {
         solve();
     }
     return 0;
