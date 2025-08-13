@@ -32,15 +32,8 @@ ll query(int l, int r) {
     }
     return ret;
 }
-void fastio() {
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-#endif
-}
 
 int main() {
-    fastio();
     ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
     cin >> n >> q;
     for (int i = 0; i < n; i++) {
