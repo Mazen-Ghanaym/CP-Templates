@@ -20,12 +20,6 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio() {
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-#endif
-}
 struct Matrix {
     vector<vector<int>> mat;
     int n, m;
@@ -41,9 +35,7 @@ struct Matrix {
     }
     Matrix identity(int n) {
         Matrix c(n, n);
-        for (int i = 0; i < n; i++) {
-            c.mat[i][i] = 1;
-        }
+        for (int i = 0; i < n; i++) c.mat[i][i] = 1;
         return c;
     }
     Matrix operator+(Matrix &b) {
@@ -79,9 +71,7 @@ struct Matrix {
         Matrix c = identity(n);
         Matrix a = *this;
         while (p > 0) {
-            if (p % 2) {
-                c = c * a;
-            }
+            if (p % 2) c = c * a;
             a = a * a;
             p /= 2;
         }
@@ -90,7 +80,6 @@ struct Matrix {
 };
 void solve(int tc) {}
 signed main(void) {
-    fastio();
     int tc = 1;
     // cin >> tc;
     int i = 1;
