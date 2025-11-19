@@ -19,6 +19,12 @@
 using namespace __gnu_pbds;
 using namespace std;
 
+/*
+Has no constructor use init() and build()
+1 based update
+1 based query
+0 based passed array for build method
+*/
 struct SegTree {
 
     struct Node {
@@ -44,7 +50,7 @@ struct SegTree {
     }
     void build(vector<int> &nums, int idx, int lx, int rx) {
         if (lx == rx) {
-            if (lx <= nums.size()) {
+            if (lx <= (int)nums.size()) {
                 tree[idx] = nums[lx - 1];
             }
             return;
