@@ -19,12 +19,21 @@
 #define PI acos(-1)
 using namespace __gnu_pbds;
 using namespace std;
-void fastio() {
-    ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
-#ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin), freopen("output.txt", "w", stdout);
-#endif
-}
+void fastio() { ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr); }
+
+/* * [MEMORY OPTIMIZATION NOTE]
+ * Problem: Inserting duplicate patterns or many small patterns (like 10^5 "a"s)
+ * causes the search function to return O(N * P) matches, leading to MLE (40GB+).
+ * * Solution: ALWAYS deduplicate patterns before inserting!
+ * Proof: If patterns are unique, the constraint sum(|s|) <= 10^5 guarantees
+ * that at any index, there are at most ~450 matches (since 1+2+...+k <= 10^5).
+ * This limits memory usage to ~180MB instead of 40GB.
+ * * Usage:
+ * 1. Use a map<string, int> to count frequencies of input strings.
+ * 2. Pass only UNIQUE strings to this AhoCorasick struct.
+ * 3. During DP/Logic, multiply the result by the frequency of the matched ID.
+ */
+
 int nextNodeId = 0;
 struct AhoCorasick {
     struct Node {
