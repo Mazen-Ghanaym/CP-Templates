@@ -243,3 +243,174 @@ signed main(void) {
     }
     return 0;
 }
+
+
+
+// Counting Frequencies of Each Palindromic Substring (OFFLINE METHOD)
+/*  This method counts how many times each DISTINCT palindrome appears,
+  and can also compute the total count of ALL palindromic substrings (including duplicates).
+  
+  We maintain a frequency array `cnt[]` where:
+  - cnt[i] = number of occurrences of the palindrome represented by node i
+  
+  After building the tree and calling compute_freq():
+  - Each cnt[i] gives the frequency of palindrome i
+  - Sum of all cnt[i] gives the total number of palindromic substrings (with duplicates)
+  
+  Note: The number of DISTINCT palindromes = sz - 2 (excluding the two roots)
+*/
+struct Eertree_Offline {
+    // ... (rest of your existing variables) ...
+    int cnt[MAXN]; // cnt[i] = how many times palindrome i appears
+
+    void init() {
+        // ... (your existing init) ...
+        memset(cnt, 0, sizeof(cnt));
+    }
+
+    void push(char c) {
+        // ... (your existing push logic) ...
+        
+        // After finding 'nxt' (the node for the current longest palindromic suffix):
+        last = nxt;
+        cnt[last]++; // Increment the count for the longest suffix ending here
+        
+        last_history[n] = last;
+        n++;
+    }
+
+    void compute_freq() {
+        // Iterate backwards from the last created node to the first
+        // This ensures we process children (longer palindromes) before parents (suffixes)
+        for (int i = sz - 1; i >= 2; i--) {
+            cnt[link[i]] += cnt[i];
+        }
+    }
+    
+    // Total Number of Palindromic Substrings (including duplicates)
+    // Call this AFTER compute_freq()
+    int total_palindromic_substrings() {
+        int total = 0;
+        for (int i = 2; i < sz; i++) {
+            total += cnt[i];
+        }
+        return total;
+    }
+};
+
+// Online Counting of Duplicate Palindromic Substrings (CORRECT METHOD)
+/*  To maintain the count of palindromic substrings including duplicates
+  in an online manner (after each push), we use the suffix link chain depth.
+  
+  Key Insight: When we add a character, the number of NEW palindromic substrings
+  ending at this position equals the depth of the current node in the suffix link tree.
+  
+  Formula: num[node] = num[link[node]] + 1
+  
+  Example for "ababa":
+  - After 'a': creates node for "a", depth=1, total=1
+  - After 'ab': creates node for "b", depth=1, total=2
+  - After 'aba': creates node for "aba", depth=2 (chain: aba->a), total=4
+  - After 'abab': creates node for "bab", depth=2 (chain: bab->b), total=6
+  - After 'ababa': creates node for "ababa", depth=3 (chain: ababa->aba->a), total=9
+*/
+struct Eertree_Online {
+    // ... (rest of your existing variables) ...
+    int num[MAXN];  // num[i] = depth in suffix link tree = # of palindromic suffixes
+    int total_count; // running total of all palindromic substrings (including duplicates)
+    
+    void init() {
+        // ... (your existing init) ...
+        num[0] = num[1] = 0; // roots have depth 0
+        total_count = 0;
+    }
+    
+    void push(char c) {
+        s[n] = c;
+        
+        int cur = get_link(last, n);
+        int nxt = find_edge(cur, c);
+
+        if (!nxt) {
+            int now = sz++;
+            len[now] = len[cur] + 2;
+            head[now] = -1;
+            par[now] = cur;
+            
+            if (len[now] == 1)
+                link[now] = 1;
+            else
+                link[now] = find_edge(get_link(link[cur], n), c);
+
+            // CRITICAL: Calculate depth in suffix link tree
+            num[now] = num[link[now]] + 1;
+            
+            add_edge(cur, c, now);
+            parent[n] = cur;
+            created[n] = true;
+            nxt = now;
+        } else {
+            created[n] = false;
+        }
+
+        last = nxt;
+        
+        // Add the count of ALL palindromes ending at current position
+        total_count += num[last];
+        
+        last_history[n] = last;
+        n++;
+    }
+    
+    void pop() {
+        if (n == 0) return;
+        
+        // Subtract the palindromes that were added at position n-1
+        total_count -= num[last];
+        
+        n--;
+        
+        if (created[n]) {
+            remove_edge(parent[n], s[n]);
+            sz--;
+        }
+        
+        last = (n == 0 ? 1 : last_history[n - 1]);
+    }
+    
+    int get_total_count() const {
+        return total_count;
+    }
+};
+
+/* 
+Usage Examples:
+
+1. OFFLINE - Count occurrences of each distinct palindrome AND total count:
+   Eertree_Offline et;
+   et.init();
+   for(char c : s) et.push(c);
+   et.compute_freq();
+   
+   Get frequency of each distinct palindrome:
+   for(int i = 2; i < et.sz; i++) {
+       cout << "Palindrome " << i << " appears " << et.cnt[i] << " times\n";
+   }
+   
+   Get total palindromic substrings (including duplicates):
+   cout << "Total: " << et.total_palindromic_substrings() << nl;
+   
+   Get count of distinct palindromes:
+   cout << "Distinct: " << (et.sz - 2) << nl;
+
+2. ONLINE - Track total palindromic substrings dynamically (including duplicates):
+   Eertree_Online et;
+   et.init();
+   for(char c : s) {
+       et.push(c);
+       cout << et.get_total_count() << sp; // total palindromes (with duplicates) after each character
+   }
+   
+   Note: Online method gives total count, not distinct count
+   For distinct count at any time, use: et.sz - 2
+*/
