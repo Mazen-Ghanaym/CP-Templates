@@ -158,6 +158,8 @@ struct Eertree {
             if (len[now] == 1)
                 link[now] = 1; // single character's suffix is empty palindrome (node 1)
             else
+                // We're extending 'cur' by character 'c' to create 'now'
+                // To find the suffix link: start from cur's suffix link and find the same extension
                 link[now] = find_edge(get_link(link[cur], n), c); // find suffix palindrome
 
             add_edge(cur, c, now);   // add edge: cur --c--> now
