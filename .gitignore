@@ -6,3 +6,7 @@
 *.fdb_latexmk
 *.dvi
 *.synctex.gz
+
+# Auto-generated files for PDF
+generate_pdf.py
+updates.pdf
