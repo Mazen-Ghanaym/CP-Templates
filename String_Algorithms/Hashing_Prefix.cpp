@@ -67,7 +67,7 @@ struct Hashing {
 
     ull get_hash(int l, int r) {
         Hash res = query(l, r);
-        return (res.h1 << 32) | res.h2;
+        return ((ull)res.h1 << 32) | res.h2;
     }
 };
 void solve(int tc) {
