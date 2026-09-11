@@ -10,3 +10,5 @@
 # Auto-generated files for PDF
 generate_pdf.py
 updates.pdf
+updates.tex
+*.tex
